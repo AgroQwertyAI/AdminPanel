@@ -1,0 +1,88 @@
+{
+    "common": {
+      "appName": "AgroAdmin",
+      "version": "AgroAdmin v1.0.0 © 2025",
+      "subtitle": "Agricultural Management"
+    },
+    "navigation": {
+      "dashboard": "Dashboard",
+      "llmConfig": "LLM Configuration",
+      "chatIntegration": "Chat Integration",
+      "reportsExcel": "Reports & Excel",
+      "cloudStorage": "Cloud Storage",
+      "bertClassifier": "BERT Classifier",
+      "taskTiming": "Task Timing",
+      "logs": "Logs",
+      "userManagement": "User Management",
+      "settings": "Settings",
+      "api": "API"
+    },
+    "userMenu": {
+      "profile": "Profile",
+      "settings": "Settings",
+      "logout": "Logout"
+    },
+    "dashboard": {
+      "title": "Dashboard",
+      "underDevelopment": "This section is under development",
+      "stats": {
+        "tasksProcessedToday": "Tasks Processed Today",
+        "moreFromYesterday": "21% more than yesterday",
+        "processingQueue": "Processing Queue",
+        "awaitingProcessing": "Tasks awaiting processing",
+        "apiCallsToday": "API Calls Today",
+        "llmCalls": "LLM and classification calls",
+        "successRate": "Processing Success Rate",
+        "increaseRate": "↗︎ 2.1% from last week"
+      },
+      "liveStatus": {
+        "title": "Live Task Processing Status",
+        "active": "Active",
+        "table": {
+          "id": "ID",
+          "taskType": "Task Type",
+          "agronomist": "Agronomist",
+          "status": "Status",
+          "time": "Time",
+          "cropAnalysis": "Crop Analysis",
+          "soilTesting": "Soil Testing",
+          "pestIdentification": "Pest Identification",
+          "irrigationAnalysis": "Irrigation Analysis",
+          "completed": "Completed",
+          "processing": "Processing",
+          "waiting": "Waiting",
+          "failed": "Failed",
+          "timeAgo": "{{time}} ago"
+        },
+        "autoRefresh": "Auto-refresh:",
+        "seconds": "30s"
+      },
+      "dailyProgress": {
+        "title": "Daily Processing Progress",
+        "target": "Processing target: 150 tasks",
+        "progress": "89/150 (59%)",
+        "endOfDay": "End of day processing at 18:00",
+        "remaining": "5 hours remaining"
+      },
+      "recentActivities": {
+        "title": "Recent Activities",
+        "activities": {
+          "export": "Task batch exported to Excel and saved to Google Drive",
+          "modelUpdate": "LLM classification model updated to version 2.3",
+          "apiDisconnect": "Telegram API temporarily disconnected (reconnecting)"
+        }
+      }
+    },
+    "systemNotice": {
+      "title": "System Notice",
+      "maintenance": "Planned maintenance: March 31, 22:00-23:00"
+    },
+
+
+
+    "meta": {
+      "title": "AgroAdmin - Agricultural Management",
+      "description": "AgroAdmin is a comprehensive agricultural management system for agronomists and farmers. Manage tasks, analyze crops, test soil, identify pests, and more.",
+      "keywords": "agroadmin, agricultural management, agronomist, farming, crop analysis, soil testing, pest identification, irrigation analysis"
+    }
+  }
