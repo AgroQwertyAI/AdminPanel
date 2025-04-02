@@ -6,9 +6,10 @@
   },
   "navigation": {
     "dashboard": "Панель управления",
-    "llmConfig": "Настройка моделей ИИ",
-    "chatIntegration": "Интеграция чата",
-    "reportsExcel": "Отчеты и Excel",
+    "chatIntegration": "Чаты",
+    "llmConfig": "Модели ИИ",
+   
+    "reportsExcel": "Отчеты",
     "cloudStorage": "Облачное хранилище",
     "bertClassifier": "BERT классификатор",
     "taskTiming": "Расписание задач",
@@ -130,5 +131,22 @@
     "ramUsage": "Использование ОЗУ",
     "gpuUsage": "Использование ГП",
     "vramUsage": "Использование видеопамяти"
+  },
+
+  "chatPanel": {
+    "title": "Управление чатами",
+    "chatViewer": "Просмотр чатов",
+    "chatConfiguration": "Настройка чатов",
+    "selectDataSource": "Выберите источник данных",
+    "selectChat": "Выберите чат",
+    "configureDataSource": "Настройка источника данных",
+    "availableChats": "Доступные чаты",
+    "noChatsAvailable": "Нет доступных чатов",
+    "noMessages": "В этом чате нет сообщений",
+    "saveActiveChats": "Сохранить активные чаты",
+    "saving": "Сохранение...",
+    "updateSuccess": "Активные чаты успешно обновлены",
+    "selectAll": "Выбрать все",
+    "deselectAll": "Снять выделение"
   }
 }

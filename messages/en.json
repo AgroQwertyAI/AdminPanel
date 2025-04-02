@@ -130,5 +130,22 @@
     "ramUsage": "RAM Usage",
     "gpuUsage": "GPU Usage",
     "vramUsage": "VRAM Usage"
+  },
+
+  "chatPanel": {
+    "title": "Chat Management",
+    "chatViewer": "Chat Viewer",
+    "chatConfiguration": "Chat Configuration",
+    "selectDataSource": "Select Data Source",
+    "selectChat": "Select Chat",
+    "configureDataSource": "Configure Data Source",
+    "availableChats": "Available Chats",
+    "noChatsAvailable": "No chats available",
+    "noMessages": "No messages in this chat",
+    "saveActiveChats": "Save Active Chats",
+    "saving": "Saving...",
+    "updateSuccess": "Active chats updated successfully",
+    "selectAll": "Select All",
+    "deselectAll": "Deselect All"
   }
 }

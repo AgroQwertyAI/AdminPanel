@@ -19,6 +19,7 @@ import { useTranslations } from 'next-intl';
 import LocaleSwitcher from "@/app/components/LocaleSwitcher";
 import SettingsPanel from "@/app/components/SettingsPanel";
 import ModelsPanel from "../components/ModelsPanel";
+import ChatPanel from "../components/ChatPanel";
 
 
 export default function AdminPanel({ }) {
@@ -228,7 +229,15 @@ export default function AdminPanel({ }) {
             </div>
           )}
 
-          {activeTab !== "dashboard" && activeTab !== "settings" && activeTab !== "llm" && (
+          {activeTab === "chats" && (
+            <div className="card bg-base-100 shadow-xl">
+              <div className="card-body">
+                <ChatPanel />
+              </div>
+            </div>
+          )}
+
+          {activeTab !== "dashboard" && activeTab !== "settings" && activeTab !== "llm" && activeTab !== "chats" && (
             <div className="card bg-base-100 shadow-xl">
               <div className="card-body">
                 <h2 className="card-title text-secondary">{navT(activeTab === "llm" ? "llmConfig" : activeTab === "chats" ? "chatIntegration" : activeTab === "reports" ? "reportsExcel" : activeTab === "storage" ? "cloudStorage" : activeTab === "classifier" ? "bertClassifier" : activeTab === "timing" ? "taskTiming" : activeTab === "logs" ? "logs" : activeTab === "users" ? "userManagement" : "settings")}</h2>
@@ -266,15 +275,6 @@ export default function AdminPanel({ }) {
             </li>
             <li>
               <button
-                className={`flex items-center p-2 ${activeTab === "llm" ? "bg-primary text-primary-content" : "hover:bg-base-200"} rounded-lg`}
-                onClick={() => setActiveTab("llm")}>
-                <Bot size={20} />
-                <span className="ml-3">{navT('llmConfig')}</span>
-                <span className="badge badge-sm badge-secondary ml-auto">{navT('api')}</span>
-              </button>
-            </li>
-            <li>
-              <button
                 className={`flex items-center p-2 ${activeTab === "chats" ? "bg-primary text-primary-content" : "hover:bg-base-200"} rounded-lg`}
                 onClick={() => setActiveTab("chats")}>
                 <MessageSquare size={20} />
@@ -291,45 +291,23 @@ export default function AdminPanel({ }) {
             </li>
             <li>
               <button
-                className={`flex items-center p-2 ${activeTab === "storage" ? "bg-primary text-primary-content" : "hover:bg-base-200"} rounded-lg`}
-                onClick={() => setActiveTab("storage")}>
-                <Cloud size={20} />
-                <span className="ml-3">{navT('cloudStorage')}</span>
+                className={`flex items-center p-2 ${activeTab === "llm" ? "bg-primary text-primary-content" : "hover:bg-base-200"} rounded-lg`}
+                onClick={() => setActiveTab("llm")}>
+                <Bot size={20} />
+                <span className="ml-3">{navT('llmConfig')}</span>
+                <span className="badge badge-sm badge-secondary ml-auto">{navT('api')}</span>
               </button>
             </li>
-            <li>
-              <button
-                className={`flex items-center p-2 ${activeTab === "classifier" ? "bg-primary text-primary-content" : "hover:bg-base-200"} rounded-lg`}
-                onClick={() => setActiveTab("classifier")}>
-                <Database size={20} />
-                <span className="ml-3">{navT('bertClassifier')}</span>
-              </button>
-            </li>
-            <li>
-              <button
-                className={`flex items-center p-2 ${activeTab === "timing" ? "bg-primary text-primary-content" : "hover:bg-base-200"} rounded-lg`}
-                onClick={() => setActiveTab("timing")}>
-                <Clock size={20} />
-                <span className="ml-3">{navT('taskTiming')}</span>
-              </button>
-            </li>
+
             <li>
               <button
                 className={`flex items-center p-2 ${activeTab === "logs" ? "bg-primary text-primary-content" : "hover:bg-base-200"} rounded-lg`}
                 onClick={() => setActiveTab("logs")}>
                 <Activity size={20} />
                 <span className="ml-3">{navT('logs')}</span>
-                <div className="badge badge-sm badge-error ml-auto">5</div>
               </button>
             </li>
-            <li>
-              <button
-                className={`flex items-center p-2 ${activeTab === "users" ? "bg-primary text-primary-content" : "hover:bg-base-200"} rounded-lg`}
-                onClick={() => setActiveTab("users")}>
-                <Users size={20} />
-                <span className="ml-3">{navT('userManagement')}</span>
-              </button>
-            </li>
+
             <li>
               <button
                 className={`flex items-center p-2 ${activeTab === "settings" ? "bg-primary text-primary-content" : "hover:bg-base-200"} rounded-lg`}
@@ -341,7 +319,7 @@ export default function AdminPanel({ }) {
           </ul>
           <div className="divider"></div>
           <LocaleSwitcher />
-          
+
         </div>
       </div>
     </div>
