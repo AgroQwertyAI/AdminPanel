@@ -16,7 +16,10 @@ import {
   Activity
 } from "lucide-react";
 import { useTranslations } from 'next-intl';
-import LocaleSwitcher from "../components/LocaleSwitcher";
+import LocaleSwitcher from "@/app/components/LocaleSwitcher";
+import SettingsPanel from "@/app/components/SettingsPanel";
+import ModelsPanel from "../components/ModelsPanel";
+
 
 export default function AdminPanel({ }) {
   // const t = useTranslations();
@@ -209,7 +212,23 @@ export default function AdminPanel({ }) {
             </>
           )}
 
-          {activeTab !== "dashboard" && (
+          {activeTab === "settings" && (
+            <div className="card bg-base-100 shadow-xl">
+              <div className="card-body">
+                <SettingsPanel />
+              </div>
+            </div>
+          )}
+
+          {activeTab === "llm" && (
+            <div className="card bg-base-100 shadow-xl">
+              <div className="card-body">
+                <ModelsPanel />
+              </div>
+            </div>
+          )}
+
+          {activeTab !== "dashboard" && activeTab !== "settings" && activeTab !== "llm" && (
             <div className="card bg-base-100 shadow-xl">
               <div className="card-body">
                 <h2 className="card-title text-secondary">{navT(activeTab === "llm" ? "llmConfig" : activeTab === "chats" ? "chatIntegration" : activeTab === "reports" ? "reportsExcel" : activeTab === "storage" ? "cloudStorage" : activeTab === "classifier" ? "bertClassifier" : activeTab === "timing" ? "taskTiming" : activeTab === "logs" ? "logs" : activeTab === "users" ? "userManagement" : "settings")}</h2>
@@ -322,16 +341,7 @@ export default function AdminPanel({ }) {
           </ul>
           <div className="divider"></div>
           <LocaleSwitcher />
-          <div className="alert bg-warning/20 text-base-content border-warning/30 shadow-lg">
-            <AlertCircle className="text-warning" />
-            <div>
-              <h3 className="font-bold">{noticeT('title')}</h3>
-              <div className="text-xs">{noticeT('maintenance')}</div>
-            </div>
-          </div>
-          <div className="mt-auto text-center text-xs opacity-60 py-4">
-            {commonT('version')}
-          </div>
+          
         </div>
       </div>
     </div>

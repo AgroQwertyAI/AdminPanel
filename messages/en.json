@@ -1,88 +1,134 @@
 {
-    "common": {
-      "appName": "AgroAdmin",
-      "version": "AgroAdmin v1.0.0 © 2025",
-      "subtitle": "Agricultural Management"
+  "common": {
+    "appName": "AgroAdmin",
+    "version": "AgroAdmin v1.0.0 © 2025",
+    "subtitle": "Agricultural Management"
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "llmConfig": "LLM Configuration",
+    "chatIntegration": "Chat Integration",
+    "reportsExcel": "Reports & Excel",
+    "cloudStorage": "Cloud Storage",
+    "bertClassifier": "BERT Classifier",
+    "taskTiming": "Task Timing",
+    "logs": "Logs",
+    "userManagement": "User Management",
+    "settings": "Settings",
+    "api": "API"
+  },
+  "userMenu": {
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "underDevelopment": "This section is under development",
+    "stats": {
+      "tasksProcessedToday": "Tasks Processed Today",
+      "moreFromYesterday": "21% more than yesterday",
+      "processingQueue": "Processing Queue",
+      "awaitingProcessing": "Tasks awaiting processing",
+      "apiCallsToday": "API Calls Today",
+      "llmCalls": "LLM and classification calls",
+      "successRate": "Processing Success Rate",
+      "increaseRate": "↗︎ 2.1% from last week"
     },
-    "navigation": {
-      "dashboard": "Dashboard",
-      "llmConfig": "LLM Configuration",
-      "chatIntegration": "Chat Integration",
-      "reportsExcel": "Reports & Excel",
-      "cloudStorage": "Cloud Storage",
-      "bertClassifier": "BERT Classifier",
-      "taskTiming": "Task Timing",
-      "logs": "Logs",
-      "userManagement": "User Management",
-      "settings": "Settings",
-      "api": "API"
+    "liveStatus": {
+      "title": "Live Task Processing Status",
+      "active": "Active",
+      "table": {
+        "id": "ID",
+        "taskType": "Task Type",
+        "agronomist": "Agronomist",
+        "status": "Status",
+        "time": "Time",
+        "cropAnalysis": "Crop Analysis",
+        "soilTesting": "Soil Testing",
+        "pestIdentification": "Pest Identification",
+        "irrigationAnalysis": "Irrigation Analysis",
+        "completed": "Completed",
+        "processing": "Processing",
+        "waiting": "Waiting",
+        "failed": "Failed",
+        "timeAgo": "{{time}} ago"
+      },
+      "autoRefresh": "Auto-refresh:",
+      "seconds": "30s"
     },
-    "userMenu": {
-      "profile": "Profile",
-      "settings": "Settings",
-      "logout": "Logout"
+    "dailyProgress": {
+      "title": "Daily Processing Progress",
+      "target": "Processing target: 150 tasks",
+      "progress": "89/150 (59%)",
+      "endOfDay": "End of day processing at 18:00",
+      "remaining": "5 hours remaining"
     },
-    "dashboard": {
-      "title": "Dashboard",
-      "underDevelopment": "This section is under development",
-      "stats": {
-        "tasksProcessedToday": "Tasks Processed Today",
-        "moreFromYesterday": "21% more than yesterday",
-        "processingQueue": "Processing Queue",
-        "awaitingProcessing": "Tasks awaiting processing",
-        "apiCallsToday": "API Calls Today",
-        "llmCalls": "LLM and classification calls",
-        "successRate": "Processing Success Rate",
-        "increaseRate": "↗︎ 2.1% from last week"
-      },
-      "liveStatus": {
-        "title": "Live Task Processing Status",
-        "active": "Active",
-        "table": {
-          "id": "ID",
-          "taskType": "Task Type",
-          "agronomist": "Agronomist",
-          "status": "Status",
-          "time": "Time",
-          "cropAnalysis": "Crop Analysis",
-          "soilTesting": "Soil Testing",
-          "pestIdentification": "Pest Identification",
-          "irrigationAnalysis": "Irrigation Analysis",
-          "completed": "Completed",
-          "processing": "Processing",
-          "waiting": "Waiting",
-          "failed": "Failed",
-          "timeAgo": "{{time}} ago"
-        },
-        "autoRefresh": "Auto-refresh:",
-        "seconds": "30s"
-      },
-      "dailyProgress": {
-        "title": "Daily Processing Progress",
-        "target": "Processing target: 150 tasks",
-        "progress": "89/150 (59%)",
-        "endOfDay": "End of day processing at 18:00",
-        "remaining": "5 hours remaining"
-      },
-      "recentActivities": {
-        "title": "Recent Activities",
-        "activities": {
-          "export": "Task batch exported to Excel and saved to Google Drive",
-          "modelUpdate": "LLM classification model updated to version 2.3",
-          "apiDisconnect": "Telegram API temporarily disconnected (reconnecting)"
-        }
+    "recentActivities": {
+      "title": "Recent Activities",
+      "activities": {
+        "export": "Task batch exported to Excel and saved to Google Drive",
+        "modelUpdate": "LLM classification model updated to version 2.3",
+        "apiDisconnect": "Telegram API temporarily disconnected (reconnecting)"
       }
-    },
-    "systemNotice": {
-      "title": "System Notice",
-      "maintenance": "Planned maintenance: March 31, 22:00-23:00"
-    },
-
-
-
-    "meta": {
-      "title": "AgroAdmin - Agricultural Management",
-      "description": "AgroAdmin is a comprehensive agricultural management system for agronomists and farmers. Manage tasks, analyze crops, test soil, identify pests, and more.",
-      "keywords": "agroadmin, agricultural management, agronomist, farming, crop analysis, soil testing, pest identification, irrigation analysis"
     }
+  },
+  "systemNotice": {
+    "title": "System Notice",
+    "maintenance": "Planned maintenance: March 31, 22:00-23:00"
+  },
+  "meta": {
+    "title": "AgroAdmin - Agricultural Management",
+    "description": "AgroAdmin is a comprehensive agricultural management system for agronomists and farmers. Manage tasks, analyze crops, test soil, identify pests, and more.",
+    "keywords": "agroadmin, agricultural management, agronomist, farming, crop analysis, soil testing, pest identification, irrigation analysis"
+  },
+  "settingsPanel": {
+    "title": "Settings",
+    "apiConfigTitle": "LLM API Configuration",
+    "apiUrlLabel": "LLM API Entrypoint URL",
+    "apiUrlPlaceholder": "Enter API URL",
+    "apiUrlDescription": "The base URL for LLM API requests",
+    "save": "Save",
+    "saving": "Saving...",
+    "refresh": "Refresh",
+    "updateSuccess": "LLM entrypoint updated successfully",
+    "fetchError": "Failed to fetch LLM entrypoint",
+    "updateError": "Failed to update LLM entrypoint"
+  },
+  "modelsPanel": {
+    "title": "🤖 Models Management",
+    "workersTitle": "🖥️ Connected Workers",
+    "llmSelectionTitle": "📝 Text Models (LLM) Selection",
+    "vlmSelectionTitle": "🖼️ Vision Models (VLM) Selection",
+    "noWorkersFound": "No workers connected to the system",
+    "connected": "Online",
+    "disconnected": "Offline",
+    "hotModels": "🔥Hot Models",
+    "coldModels": "❄️ Cold Models",
+    "noHotModels": "No active models",
+    "noColdModels": "No available models",
+    "selectedLLMs": "Selected Text Models",
+    "selectedVLMs": "Selected Vision Models",
+    "availableLLMs": "Available Text Models",
+    "availableVLMs": "Available Vision Models",
+    "noModelsSelected": "No models selected",
+    "noAvailableModels": "All models already selected",
+    "fetchError": "Failed to fetch data",
+    "updateError": "Failed to update configuration",
+    "workersError": "Failed to fetch workers data",
+    "llmUpdateSuccess": "✅ Text models list updated successfully",
+    "vlmUpdateSuccess": "✅ Vision models list updated successfully",
+    "apiName": "Internal Name",
+    "backend": "Backend",
+    "quant": "Quantization",
+    "wrapper": "Wrapper",
+    "contextLength": "Context Length",
+    "parallelRequests": "Parallel Requests",
+    "performanceMetrics": "Performance Metrics",
+    "tasksProcessed": "Tasks Processed",
+    "cpuUsage": "CPU Usage",
+    "ramUsage": "RAM Usage",
+    "gpuUsage": "GPU Usage",
+    "vramUsage": "VRAM Usage"
   }
+}
