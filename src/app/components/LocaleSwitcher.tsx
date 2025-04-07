@@ -56,14 +56,14 @@ export default function LocaleSwitcher() {
       {/* The button that opens the dropdown */}
       <div tabIndex={0} role="button" className="btn btn-ghost rounded-btn">
         <span className="text-xl mr-2">{currentLanguage.emoji}</span>
-        <span className="text-sm">{currentLanguage.name}</span>
+        <span className="text-sm text-base-content">{currentLanguage.name}</span>
         <svg 
           xmlns="http://www.w3.org/2000/svg" 
           fill="none" 
           viewBox="0 0 24 24" 
           strokeWidth={2} 
           stroke="currentColor" 
-          className="w-4 h-4 ml-1"
+          className="w-4 h-4 ml-1 text-base-content"
         >
           <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
         </svg>
@@ -79,7 +79,7 @@ export default function LocaleSwitcher() {
               disabled={isPending}
             >
               <span className="text-xl">{language.emoji}</span>
-              <span>{language.name}</span>
+              <span className='text-base-content'>{language.name}</span>
               {currentLocale === language.code && (
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4 ml-auto">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />

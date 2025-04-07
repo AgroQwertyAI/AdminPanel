@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 
 import { getTranslations } from 'next-intl/server';
+import { SessionProvider } from "next-auth/react";
 
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
@@ -22,10 +23,10 @@ export default async function LocaleLayout({
   params
 }: {
   children: React.ReactNode;
-  params: Promise<{ locale: string }>;
+  params: Promise<{ locale: string, session:any }>;
 }) {
   // Ensure that the incoming `locale` is valid
-  const { locale } = await params;
+  const { locale, session } = await params;
   if (!hasLocale(routing.locales, locale)) {
     notFound();
   }
@@ -33,7 +34,11 @@ export default async function LocaleLayout({
   return (
     <html lang={locale}>
       <body>
+        <SessionProvider  session={session} >
+
+
           <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        </SessionProvider>
       </body>
     </html>
   );

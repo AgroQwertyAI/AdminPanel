@@ -13,60 +13,19 @@ declare module "next-auth" {
     interface Session extends DefaultSession {
         user: {
             id: string;
+            name: string;
             role: string;
             // ...other properties
             // role: UserRole;
         } & DefaultSession["user"];
     }
 
-    // interface User {
-    //   // ...other properties
-    //   // role: UserRole;
-    // }
+    interface User {
+        role: string;
+        // ...other properties
+    }
 }
 
-// Authentication service functions using axios
-const authService = {
-    authenticate: async (username: string, password: string) => {
-        try {
-            const response = await axios.post('http://localhost:8000/authorize', {
-                username,
-                password
-            });
-            
-            return response.data;
-        } catch (error) {
-            if (axios.isAxiosError(error)) {
-                console.error('Authentication error:', 
-                    error.response?.data?.detail || error.message || 'Unknown error');
-            } else {
-                console.error('HTTP request failed:', error);
-            }
-            return null;
-        }
-    },
-
-    createUser: async (username: string, password: string, name: string, role: string = "user") => {
-        try {
-            const response = await axios.post('http://localhost:8000/create_user', {
-                username,
-                password,
-                name,
-                role
-            });
-            
-            return response.data;
-        } catch (error) {
-            if (axios.isAxiosError(error)) {
-                console.error('User creation error:', 
-                    error.response?.data?.detail || error.message || 'Unknown error');
-            } else {
-                console.error('HTTP request failed:', error);
-            }
-            return null;
-        }
-    }
-};
 
 /**
  * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.
@@ -88,10 +47,22 @@ export const authConfig = {
                     return null;
                 }
 
-                const username = credentials.username as string;
-                const password = credentials.password as string;
+                const res = await fetch(`${process.env.NEXTAUTH_URL}/api/users/auth`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        username: credentials.username,
+                        password: credentials.password,
+                    }),
+                });
 
-                return await authService.authenticate(username, password);
+                const user = await res.json();
+
+                if (res.ok && user) {
+                    return user;
+                }
+                
+                return null;
             }
         })
     ],

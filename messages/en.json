@@ -131,21 +131,273 @@
     "gpuUsage": "GPU Usage",
     "vramUsage": "VRAM Usage"
   },
-
   "chatPanel": {
-    "title": "Chat Management",
+    "title": "Chat Panel",
     "chatViewer": "Chat Viewer",
     "chatConfiguration": "Chat Configuration",
     "selectDataSource": "Select Data Source",
     "selectChat": "Select Chat",
+    "selectAll": "Select All",
+    "deselectAll": "Deselect All",
+    "noChatsSelected": "No chats selected. Please select at least one chat to view messages.",
+    "noMessages": "No messages found in this chat.",
+    "selectDataSourceFirst": "Please select a data source first",
+    "noChatsAvailable": "No chats available",
+    "unknownChat": "Unknown Chat",
+    "unknownSource": "Unknown Source",
+    "unknownSender": "Unknown Sender",
+    "unnamed": "Unnamed Chat",
     "configureDataSource": "Configure Data Source",
     "availableChats": "Available Chats",
-    "noChatsAvailable": "No chats available",
-    "noMessages": "No messages in this chat",
-    "saveActiveChats": "Save Active Chats",
-    "saving": "Saving...",
-    "updateSuccess": "Active chats updated successfully",
-    "selectAll": "Select All",
-    "deselectAll": "Deselect All"
+    "chatStatusUpdated": "Chat status updated successfully"
+  },
+  "landing": {
+    "nav": {
+      "features": "Features",
+      "howItWorks": "How It Works",
+      "testimonials": "Testimonials",
+      "pricing": "Pricing",
+      "contact": "Contact",
+      "signIn": "Sign In"
+    },
+    "hero": {
+      "title": {
+        "firstPart": "Transform Agricultural Chats into",
+        "highlight": "Actionable Reports"
+      },
+      "description": "Our AI-powered platform automatically extracts valuable insights from agricultural chat discussions, helping you make data-driven decisions without manual analysis.",
+      "primaryCta": "Sign In",
+      "secondaryCta": "Learn More",
+      "chatDemo": {
+        "message1": "The soil moisture levels are below average this season.",
+        "message2": "We should adjust irrigation schedules accordingly.",
+        "message3": "Drone images show potential pest issues in sector 5.",
+        "processing": "AI Processing",
+        "result": "Report generated: Irrigation needs increased by 15%"
+      }
+    },
+    "features": {
+      "title": "Unlock the Power of Conversation",
+      "cards": {
+        "analysis": {
+          "title": "AI-Powered Analysis",
+          "description": "Our intelligent system captures and analyzes agricultural chat conversations automatically."
+        },
+        "insights": {
+          "title": "Actionable Insights",
+          "description": "Convert casual discussions into structured data for better decision making."
+        },
+        "reporting": {
+          "title": "Automated Reporting",
+          "description": "Generate professional reports with key findings and recommendations instantly."
+        }
+      }
+    },
+    "howItWorks": {
+      "title": "How QwertyAI Works",
+      "steps": {
+        "connect": {
+          "title": "Connect Your Chats",
+          "description": "Integrate with popular messaging platforms or use our custom chat solution."
+        },
+        "conversations": {
+          "title": "Have Conversations",
+          "description": "Discuss agricultural topics naturally with your team or experts."
+        },
+        "ai": {
+          "title": "AI Analysis",
+          "description": "Our AI extracts key data points, trends, and actionable information."
+        },
+        "reports": {
+          "title": "Get Reports",
+          "description": "Receive automated reports with insights organized by categories."
+        }
+      }
+    },
+    "stats": {
+      "users": {
+        "title": "Active Users",
+        "description": "Trusted by farmers worldwide"
+      },
+      "conversations": {
+        "title": "Conversations Analyzed",
+        "description": "Since our launch in 2023"
+      },
+      "countries": {
+        "title": "Countries",
+        "description": "Global agricultural coverage"
+      }
+    },
+    "testimonials": {
+      "title": "What Our Users Say",
+      "cards": {
+        "first": {
+          "name": "John Smith",
+          "role": "Farm Manager, USA",
+          "quote": "QwertyAI has transformed how we handle agricultural data. What used to take hours of meetings and notes now happens automatically."
+        },
+        "second": {
+          "name": "Maria Rodriguez",
+          "role": "Agricultural Consultant",
+          "quote": "The insights generated from our casual discussions have proven invaluable for optimizing crop yields for our clients."
+        },
+        "third": {
+          "name": "Alex Tanner",
+          "role": "Cooperative Director",
+          "quote": "Implementing QwertyAI across our cooperative has standardized our reporting and improved decision-making for all members."
+        }
+      }
+    },
+    "pricing": {
+      "title": "Simple, Transparent Pricing",
+      "subtitle": "Choose the plan that fits your agricultural operation",
+      "popular": "MOST POPULAR",
+      "choosePlan": "Choose Plan",
+      "contact": "Contact Sales",
+      "plans": {
+        "starter": {
+          "name": "Starter",
+          "price": "$29",
+          "features": {
+            "f1": "Up to 5 users",
+            "f2": "1,000 messages per month",
+            "f3": "Basic reporting",
+            "f4": "Email support"
+          }
+        },
+        "pro": {
+          "name": "Professional",
+          "price": "$79",
+          "features": {
+            "f1": "Up to 20 users",
+            "f2": "10,000 messages per month",
+            "f3": "Advanced analytics",
+            "f4": "Priority support",
+            "f5": "Custom report templates"
+          }
+        },
+        "enterprise": {
+          "name": "Enterprise",
+          "price": "Custom",
+          "features": {
+            "f1": "Unlimited users",
+            "f2": "Unlimited messages",
+            "f3": "Full API access",
+            "f4": "Dedicated support manager",
+            "f5": "Custom integrations"
+          }
+        }
+      }
+    },
+    "contact": {
+      "title": "Get In Touch",
+      "getInTouch": "Contact Us",
+      "description": "Have questions about QwertyAI? Our team is here to help you transform your agricultural communications into actionable intelligence.",
+      "form": {
+        "name": "Name",
+        "namePlaceholder": "Enter your name",
+        "email": "Email",
+        "emailPlaceholder": "Enter your email",
+        "message": "Message",
+        "messagePlaceholder": "How can we help you?",
+        "submit": "Send Message"
+      }
+    },
+    "cta": {
+      "title": "Ready to Streamline Your Agricultural Data?",
+      "description": "Join farmers and agricultural professionals who are saving hours each week with automated chat analysis.",
+      "button": "Sign In to Get Started"
+    },
+    "footer": {
+      "copyright": "© {year} QwertyAI. All rights reserved.",
+      "product": "Product",
+      "company": "Company",
+      "legal": "Legal",
+      "links": {
+        "features": "Features",
+        "pricing": "Pricing",
+        "faq": "FAQ",
+        "about": "About Us",
+        "contact": "Contact",
+        "jobs": "Careers",
+        "terms": "Terms of Use",
+        "privacy": "Privacy Policy",
+        "cookies": "Cookie Policy"
+      }
+    }
+  },
+  "signin": {
+    "welcomeBack": "Welcome Back",
+    "signInContinue": "Sign in to continue to your account",
+    "username": "Username",
+    "usernamePlaceholder": "Enter your username",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "signIn": "Sign In",
+    "signingIn": "Signing in...",
+    "invalidCredentials": "Invalid username or password",
+    "errorMessage": "Something went wrong. Please try again."
+  },
+  "users": {
+    "loading": "Loading...",
+    "accessDeniedTitle": "Access Denied",
+    "accessDeniedMessage": "Please sign in to view the Users Panel.",
+    "errorPrefix": "Error: ",
+    "errorFetchTeam": "Failed to fetch your team information.",
+    "errorNoTeamAssigned": "You are not currently assigned to any team.",
+    "errorFetchMembers": "Failed to fetch team members.",
+    "errorGenericFetch": "Error fetching team details.",
+    "errorCreateUser": "Failed to create user.",
+    "errorAddUserToTeam": "Failed to add user to the team. User creation rolled back.",
+    "errorDeleteUserAccount": "Failed to delete the user account.",
+    "errorGenericAction": "An error occurred while processing your request.",
+    "errorCouldNotDetermineTeam": "Could not determine your team.",
+    "title": "Team Users: {teamName}",
+    "viewOnlyMessage": "You have view-only access for this team.",
+    "table": {
+      "username": "Username",
+      "name": "Name",
+      "role": "Role",
+      "actions": "Actions",
+      "roleAdmin": "Admin",
+      "roleUser": "User",
+      "roleNA": "N/A",
+      "currentUser": "Current User",
+      "noUsers": "No users found in this team."
+    },
+    "buttons": {
+      "addUser": "Add New User",
+      "saveUser": "Save User",
+      "cancel": "Cancel",
+      "deleteUserAriaLabel": "Delete user {username}"
+    },
+    "addUserForm": {
+      "title": "Add New User to Team",
+      "usernameLabel": "Username",
+      "usernamePlaceholder": "e.g., jdoe",
+      "nameLabel": "Full Name",
+      "namePlaceholder": "e.g., John Doe",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Min 8 characters"
+    },
+    "deleteConfirm": "Are you sure you want to remove this user from the team and delete their account?"
+  },
+  "profile": {
+    "title": "Profile Settings",
+    "currentNameLabel": "Current Name",
+    "nameLabel": "Name",
+    "namePlaceholder": "Enter your new name",
+    "passwordLabel": "New Password",
+    "passwordPlaceholder": "Leave blank to keep current password",
+    "confirmPasswordLabel": "Confirm New Password",
+    "confirmPasswordPlaceholder": "Confirm your new password",
+    "updateButton": "Update Profile",
+    "updatingButton": "Updating...",
+    "errorPasswordMismatch": "Passwords do not match.",
+    "errorUpdateFailed": "Failed to update profile. Please try again.",
+    "errorMissingUserId": "User session not found. Please log in again.",
+    "successUpdate": "Profile updated successfully!",
+    "loadingUser": "Loading user data...",
+    "sessionError": "Could not load user session."
   }
 }

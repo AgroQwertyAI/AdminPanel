@@ -139,11 +139,11 @@ const WorkerMetrics = ({ worker, entrypointUrl }: { worker: Worker, entrypointUr
               const newMetrics = [...updatedWorker.metrics];
               return newMetrics.slice(-MAX_DATA_POINTS);
             });
-            
+
             if (isFirstLoad) {
               setIsFirstLoad(false);
             }
-            
+
             setError(null);
           }
         }
@@ -213,7 +213,7 @@ const WorkerMetrics = ({ worker, entrypointUrl }: { worker: Worker, entrypointUr
                     <span className="text-xs font-medium">{t('tasksProcessed')}</span>
                     <span className="text-xs">{latest.tasks_processed}</span>
                   </div>
-                  <div className="h-30 bg-base-300 rounded p-1" style={{minHeight: "40px"}}>
+                  <div className="h-30 bg-base-300 rounded p-1" style={{ minHeight: "40px" }}>
                     <BarGraph data={tasksData} colorClass="bg-success" />
                   </div>
                 </div>
@@ -225,7 +225,7 @@ const WorkerMetrics = ({ worker, entrypointUrl }: { worker: Worker, entrypointUr
                       <span className="text-xs font-medium">{t('cpuUsage')}</span>
                       <span className="text-xs">{latest.cpu_percent.toFixed(1)}%</span>
                     </div>
-                    <div className="h-30 bg-base-300 rounded p-1" style={{minHeight: "40px"}}>
+                    <div className="h-30 bg-base-300 rounded p-1" style={{ minHeight: "40px" }}>
                       <BarGraph data={cpuData} colorClass="bg-primary" showValues={false} maxCapacity={100} />
                     </div>
                   </div>
@@ -237,7 +237,7 @@ const WorkerMetrics = ({ worker, entrypointUrl }: { worker: Worker, entrypointUr
                         {latest.ram_percent.toFixed(1)}% ({(latest.ram_used_mb / 1024).toFixed(1)} GB / {(latest.ram_total_mb / 1024).toFixed(1)} GB)
                       </span>
                     </div>
-                    <div className="h-30 bg-base-300 rounded p-1" style={{minHeight: "40px"}}>
+                    <div className="h-30 bg-base-300 rounded p-1" style={{ minHeight: "40px" }}>
                       <BarGraph data={ramData} colorClass="bg-secondary" showValues={false} maxCapacity={100} />
                     </div>
                   </div>
@@ -266,7 +266,7 @@ const WorkerMetrics = ({ worker, entrypointUrl }: { worker: Worker, entrypointUr
                             <span className="text-xs">{t('gpuUsage')}</span>
                             <span className="text-xs">{gpu.util_percent.toFixed(1)}%</span>
                           </div>
-                          <div className="h-30 bg-base-300 rounded p-1" style={{minHeight: "40px"}}>
+                          <div className="h-30 bg-base-300 rounded p-1" style={{ minHeight: "40px" }}>
                             <BarGraph data={gpuHistory} colorClass="bg-accent" showValues={false} maxCapacity={100} />
                           </div>
                         </div>
@@ -278,7 +278,7 @@ const WorkerMetrics = ({ worker, entrypointUrl }: { worker: Worker, entrypointUr
                               {gpu.memory_percent.toFixed(1)}% ({(gpu.memory_used_mb / 1024).toFixed(1)} GB / {(gpu.memory_total_mb / 1024).toFixed(1)} GB)
                             </span>
                           </div>
-                          <div className="h-30 bg-base-300 rounded p-1" style={{minHeight: "40px"}}>
+                          <div className="h-30 bg-base-300 rounded p-1" style={{ minHeight: "40px" }}>
                             <BarGraph data={memoryHistory} colorClass="bg-warning" showValues={false} maxCapacity={100} />
                           </div>
                         </div>
@@ -323,15 +323,15 @@ export default function ModelsPanel() {
   // API calls
   const fetchLLMEntrypoint = async () => {
     try {
-      const response = await fetch('http://localhost:8000/get_llm_entrypoint');
+      const response = await fetch('/api/settings/llm_endpoint');
 
       if (!response.ok) {
         const error = await response.json();
-        throw new Error(error.detail || t('fetchError'));
+        throw new Error(error.error || t('fetchError'));
       }
 
       const data = await response.json();
-      setEntrypointUrl(data.llm_entrypoint);
+      setEntrypointUrl(data.llm_endpoint);
     } catch (error) {
       setMessage({ text: error.message, type: 'error' });
     }
@@ -339,15 +339,15 @@ export default function ModelsPanel() {
 
   const fetchAllowedLLMs = async () => {
     try {
-      const response = await fetch('http://localhost:8000/get_allowed_llms');
+      const response = await fetch('/api/settings/llms');
 
       if (!response.ok) {
         const error = await response.json();
-        throw new Error(error.detail || t('fetchError'));
+        throw new Error(error.error || t('fetchError'));
       }
 
       const data = await response.json();
-      setAllowedLLMs(data.allowed_llms || []);
+      setAllowedLLMs(data.llms || []);
     } catch (error) {
       console.error('Error fetching allowed LLMs:', error);
     }
@@ -355,17 +355,73 @@ export default function ModelsPanel() {
 
   const fetchAllowedVLMs = async () => {
     try {
-      const response = await fetch('http://localhost:8000/get_allowed_vlms');
+      const response = await fetch('/api/settings/vlms');
 
       if (!response.ok) {
         const error = await response.json();
-        throw new Error(error.detail || t('fetchError'));
+        throw new Error(error.error || t('fetchError'));
       }
 
       const data = await response.json();
-      setAllowedVLMs(data.allowed_vlms || []);
+      setAllowedVLMs(data.vlms || []);
     } catch (error) {
       console.error('Error fetching allowed VLMs:', error);
+    }
+  };
+
+  const updateAllowedLLMs = async (models: string[]) => {
+    try {
+      setIsLoading(true);
+      const response = await fetch('/api/settings/llms', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ llms: models }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || t('updateError'));
+      }
+
+      setAllowedLLMs(models);
+      setMessage({ text: t('llmUpdateSuccess'), type: 'success' });
+
+      // Clear message after 3 seconds
+      setTimeout(() => setMessage({ text: '', type: '' }), 3000);
+    } catch (error) {
+      setMessage({ text: error.message, type: 'error' });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const updateAllowedVLMs = async (models: string[]) => {
+    try {
+      setIsLoading(true);
+      const response = await fetch('/api/settings/vlms', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ vlms: models }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || t('updateError'));
+      }
+
+      setAllowedVLMs(models);
+      setMessage({ text: t('vlmUpdateSuccess'), type: 'success' });
+
+      // Clear message after 3 seconds
+      setTimeout(() => setMessage({ text: '', type: '' }), 3000);
+    } catch (error) {
+      setMessage({ text: error.message, type: 'error' });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -406,61 +462,6 @@ export default function ModelsPanel() {
     updateAllowedVLMs(newModels);
   };
 
-  const updateAllowedLLMs = async (models: string[]) => {
-    try {
-      setIsLoading(true);
-      const response = await fetch('http://localhost:8000/set_allowed_llms', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ models }),
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.detail || t('updateError'));
-      }
-
-      setAllowedLLMs(models);
-      setMessage({ text: t('llmUpdateSuccess'), type: 'success' });
-
-      // Clear message after 3 seconds
-      setTimeout(() => setMessage({ text: '', type: '' }), 3000);
-    } catch (error) {
-      setMessage({ text: error.message, type: 'error' });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const updateAllowedVLMs = async (models: string[]) => {
-    try {
-      setIsLoading(true);
-      const response = await fetch('http://localhost:8000/set_allowed_vlms', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ models }),
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.detail || t('updateError'));
-      }
-
-      setAllowedVLMs(models);
-      setMessage({ text: t('vlmUpdateSuccess'), type: 'success' });
-
-      // Clear message after 3 seconds
-      setTimeout(() => setMessage({ text: '', type: '' }), 3000);
-    } catch (error) {
-      setMessage({ text: error.message, type: 'error' });
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   // Get all unique model names across workers
   const getAllModels = () => {
