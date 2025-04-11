@@ -283,7 +283,7 @@ const MessagesPanel: React.FC<MessagesPanelProps> = ({ chatIds, chats, allChats 
     }, [allMessages, scrollToBottom]);
 
     // Rendering message data - MODIFIED to handle initially missing data
-    const renderMessageData = (messageData: Record<string, string> | undefined | null) => {
+    const renderMessageData = (messageData: Record<string, any> | Array<Record<string, any>> | undefined | null) => {
         // 1. Handle explicitly missing data (initial state before update)
         if (messageData === undefined || messageData === null) {
             return (
@@ -294,10 +294,48 @@ const MessagesPanel: React.FC<MessagesPanelProps> = ({ chatIds, chats, allChats 
             );
         }
 
-        // 2. Data exists, handle based on status and content
+        // Check if messageData is an array (new format)
+        if (Array.isArray(messageData)) {
+            if (messageData.length === 0) {
+                return (
+                    <div className="mt-1 text-xs opacity-60 flex items-center gap-1">
+                        <BadgeCheck className="h-3 w-3 text-success" />
+                        <span>{t('reportProcessedEmpty')}</span>
+                    </div>
+                );
+            }
+
+            // Extract column headers from the first object
+            const headers = Object.keys(messageData[0]);
+
+            return (
+                <div className="mt-2 overflow-x-auto">
+                    <table className="table table-xs table-zebra w-full text-xs">
+                        <thead>
+                            <tr className="bg-base-300">
+                                {headers.map((header, index) => (
+                                    <th key={index} className="font-medium">{header}</th>
+                                ))}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {messageData.map((row, rowIndex) => (
+                                <tr key={rowIndex}>
+                                    {headers.map((header, colIndex) => (
+                                        <td key={colIndex}>{row[header] || ''}</td>
+                                    ))}
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            );
+        }
+
+        // Original implementation for non-array data
         const status = messageData.status;
 
-        // Explicit processing status *within* the data object
+        // Explicit processing status within data object
         if (status === 'processing') {
             return (
                 <div className="mt-2 text-xs opacity-70 flex items-center gap-1 text-info">
@@ -350,13 +388,11 @@ const MessagesPanel: React.FC<MessagesPanelProps> = ({ chatIds, chats, allChats 
                 );
             }
             // Data existed, wasn't processing/error, empty after removing status, and not explicitly processed?
-            // Render nothing in this edge case.
             else {
                 return null;
             }
         }
     };
-
 
     const renderContent = () => {
         if (isLoading && isInitialRenderForChatIds.current) {
@@ -398,8 +434,8 @@ const MessagesPanel: React.FC<MessagesPanelProps> = ({ chatIds, chats, allChats 
         return allMessages.map((message) => {
             // Add a check for message validity, especially after potential partial updates
             if (!message?.message_id || !message.chat_id || !message.timestamp) {
-                 console.warn("Skipping rendering invalid message object:", message);
-                 return null;
+                console.warn("Skipping rendering invalid message object:", message);
+                return null;
             }
 
             const chatName = getChatName(message.chat_id);
@@ -428,7 +464,7 @@ const MessagesPanel: React.FC<MessagesPanelProps> = ({ chatIds, chats, allChats 
                         {/* Sender */}
                         <div className="font-semibold text-primary mb-0.5">
                             {message.sender_name ?? t('unknownSender')}
-                            {message.sender_id && <span className="text-xs opacity-60 ml-1">({message.sender_id})</span>}
+                            
                         </div>
                         {/* Text */}
                         {message.text != null && message.text !== '' && ( // Also check for empty string

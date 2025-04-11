@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
       chat_id,
       chat_name,
       source_name,
-      active: true,
+      active: false,
       created_at: new Date()
     });
     

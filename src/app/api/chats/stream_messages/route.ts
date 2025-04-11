@@ -60,7 +60,7 @@ export function broadcastMessage(message: any) {
   
   // Create a copy of client entries to avoid issues if the map changes during iteration
   const clientEntries = Array.from(clients.entries());
-  
+  console.log(JSON.stringify(message));
   console.log(`[SSE] Broadcasting to ${clientEntries.length} clients`);
   
   for (const [clientId, controller] of clientEntries) {

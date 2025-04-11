@@ -27,6 +27,8 @@ import UsersPanel from "@/app/components/UsersPanel";
 
 import { signOut } from "next-auth/react"
 import ProfilePanel from "@/app/components/ProfilePanel";
+import ReportsPanel from "@/app/components/ReportsPanel";
+import LogPanel from "@/app/components/LogPanel";
 
 
 export default function AdminPanel({ }) {
@@ -259,7 +261,24 @@ export default function AdminPanel({ }) {
             </div>
           )}
 
-          {activeTab !== "profile" && activeTab !== "users" && activeTab !== "dashboard" && activeTab !== "settings" && activeTab !== "llm" && activeTab !== "chats" && (
+          {activeTab === "reports" && (
+            <div className="card bg-base-100 shadow-xl">
+              <div className="card-body">
+                <ReportsPanel />
+              </div>
+            </div>
+          )}
+
+          {activeTab === "logs" && (
+            <div className="card bg-base-100 shadow-xl">
+              <div className="card-body">
+                <LogPanel />
+              </div>
+            </div>
+          )}
+
+
+          {activeTab !== "logs" &&activeTab !== "reports" && activeTab !== "profile" && activeTab !== "users" && activeTab !== "dashboard" && activeTab !== "settings" && activeTab !== "llm" && activeTab !== "chats" && (
             <div className="card bg-base-100 shadow-xl">
               <div className="card-body">
                 <h2 className="card-title text-secondary">{navT(activeTab === "llm" ? "llmConfig" : activeTab === "chats" ? "chatIntegration" : activeTab === "reports" ? "reportsExcel" : activeTab === "storage" ? "cloudStorage" : activeTab === "classifier" ? "bertClassifier" : activeTab === "timing" ? "taskTiming" : activeTab === "logs" ? "logs" : activeTab === "users" ? "userManagement" : "settings")}</h2>
@@ -308,7 +327,7 @@ export default function AdminPanel({ }) {
                 className={`flex items-center p-2 ${activeTab === "reports" ? "bg-primary text-primary-content" : "hover:bg-base-200"} rounded-lg`}
                 onClick={() => setActiveTab("reports")}>
                 <FileSpreadsheet size={20} />
-                <span className="ml-3">{navT('reportsExcel')}</span>
+                <span className="ml-3">{navT('reports')}</span>
               </button>
             </li>
             <li>
