@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import Papa from 'papaparse';
+import { useTranslations } from 'next-intl';
 
 // Define types for better code clarity
 interface Chat {
@@ -15,6 +16,8 @@ interface Chat {
 type ReportRow = Record<string, string>;
 
 export default function ReportGeneratorPage() {
+    const t = useTranslations('reports');
+    
     const [chats, setChats] = useState<Chat[]>([]);
     const [selectedChatId, setSelectedChatId] = useState<string>('');
     const [reportData, setReportData] = useState<ReportRow[]>([]);
@@ -23,13 +26,15 @@ export default function ReportGeneratorPage() {
     const [isGeneratingReport, setIsGeneratingReport] = useState<boolean>(false);
     const [isDownloading, setIsDownloading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
+    const [startDate, setStartDate] = useState<string>('');
+    const [endDate, setEndDate] = useState<string>('');
 
     // Fetch active chats from both WhatsApp and Telegram
     const fetchChats = useCallback(async () => {
         setIsLoadingChats(true);
         setError(null);
         setChats([]); // Clear previous chats
-        
+
         try {
             // Fetch chats from both sources
             const [whatsappResponse, telegramResponse] = await Promise.all([
@@ -39,31 +44,31 @@ export default function ReportGeneratorPage() {
 
             if (!whatsappResponse.ok) {
                 const errorData = await whatsappResponse.json();
-                throw new Error(errorData.error || `Failed to fetch WhatsApp chats (status: ${whatsappResponse.status})`);
+                throw new Error(errorData.error || t('errors.whatsappFetch', { status: whatsappResponse.status }));
             }
-            
+
             if (!telegramResponse.ok) {
                 const errorData = await telegramResponse.json();
-                throw new Error(errorData.error || `Failed to fetch Telegram chats (status: ${telegramResponse.status})`);
+                throw new Error(errorData.error || t('errors.telegramFetch', { status: telegramResponse.status }));
             }
 
             const whatsappData: { chats: Chat[] } = await whatsappResponse.json();
             const telegramData: { chats: Chat[] } = await telegramResponse.json();
-            
+
             // Combine and filter active chats from both sources
             const allActiveChats = [
                 ...whatsappData.chats.filter(chat => chat.active),
                 ...telegramData.chats.filter(chat => chat.active)
             ];
-            
+
             setChats(allActiveChats);
         } catch (err: any) {
             console.error("Error fetching chats:", err);
-            setError(err.message || "An unknown error occurred while fetching chats.");
+            setError(err.message || t('errors.unknown'));
         } finally {
             setIsLoadingChats(false);
         }
-    }, []);
+    }, [t]);
 
     // Fetch chats on component mount
     useEffect(() => {
@@ -89,15 +94,49 @@ export default function ReportGeneratorPage() {
         setReportHeaders([]);
 
         try {
-            const url = `/api/services/generate_table?chat_id=${encodeURIComponent(selectedChatId)}&format=csv`;
-            const response = await fetch(url);
+            // Use the API endpoint with POST request
+            const url = `http://localhost:52003/generate_table/${encodeURIComponent(selectedChatId)}`;
+
+            // Get columns from report headers or use default empty array if not available
+            const columns = reportHeaders.length > 0 ? reportHeaders : [];
+
+            // Default to a recent time range if not specified
+            const now = new Date();
+            const oneMonthAgo = new Date();
+            oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+
+            // Format dates with time component to ensure proper parsing
+            const formatDateForAPI = (date: Date) => {
+                return date.toISOString(); // Full ISO timestamp with timezone
+            };
+
+            // Updated request body - removed type_mappings
+            const requestBody = {
+                time: {
+                    start: startDate ? `${startDate}T00:00:00Z` : formatDateForAPI(oneMonthAgo),
+                    end: endDate ? `${endDate}T23:59:59Z` : formatDateForAPI(now),
+                    format: "iso"
+                },
+                columns: columns,
+                format: "csv" // Always use CSV for preview
+            };
+
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestBody)
+            });
 
             if (!response.ok) {
                 // Try to get error message from response body if possible
-                let errorMsg = `Failed to generate report (status: ${response.status})`;
+                let errorMsg = t('errors.reportGeneration', { status: response.status });
                 try {
                     const errorText = await response.text();
-                    errorMsg = `Failed to generate report: ${errorText || response.statusText}`;
+                    errorMsg = t('errors.reportGenerationWithDetails', {
+                        details: errorText || response.statusText
+                    });
                 } catch (_) { /* Ignore parsing error */ }
                 throw new Error(errorMsg);
             }
@@ -111,7 +150,7 @@ export default function ReportGeneratorPage() {
                 complete: (results) => {
                     if (results.errors.length > 0) {
                         console.error("CSV Parsing errors:", results.errors);
-                        setError(`Failed to parse CSV report. ${results.errors[0]?.message || ''}`);
+                        setError(t('errors.csvParse', { details: results.errors[0]?.message || '' }));
                         setReportData([]);
                         setReportHeaders([]);
                     } else {
@@ -121,7 +160,7 @@ export default function ReportGeneratorPage() {
                 },
                 error: (err: Error) => {
                     console.error("CSV Parsing error:", err);
-                    setError(`Failed to parse CSV report: ${err.message}`);
+                    setError(t('errors.csvParseDetailed', { details: err.message }));
                     setReportData([]);
                     setReportHeaders([]);
                 }
@@ -129,7 +168,7 @@ export default function ReportGeneratorPage() {
 
         } catch (err: any) {
             console.error("Error generating report:", err);
-            setError(err.message || "An unknown error occurred while generating the report.");
+            setError(err.message || t('errors.reportGenerationUnknown'));
             setReportData([]);
             setReportHeaders([]);
         } finally {
@@ -145,14 +184,48 @@ export default function ReportGeneratorPage() {
         setError(null); // Clear previous errors
 
         try {
-            const url = `/api/services/generate_table?chat_id=${encodeURIComponent(selectedChatId)}&format=${format}`;
-            const response = await fetch(url);
+            // Use the API endpoint with POST request
+            const url = `http://localhost:52003/generate_table/${encodeURIComponent(selectedChatId)}`;
+
+            // Get columns from report headers or use default empty array if not available
+            const columns = reportHeaders.length > 0 ? reportHeaders : [];
+
+            // Default to a recent time range if not specified
+            const now = new Date();
+            const oneMonthAgo = new Date();
+            oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+
+            // Format dates with time component to ensure proper parsing
+            const formatDateForAPI = (date: Date) => {
+                return date.toISOString(); // Full ISO timestamp with timezone
+            };
+
+            // Updated request body - removed type_mappings
+            const requestBody = {
+                time: {
+                    start: startDate ? `${startDate}T00:00:00Z` : formatDateForAPI(oneMonthAgo),
+                    end: endDate ? `${endDate}T23:59:59Z` : formatDateForAPI(now),
+                    format: "iso"
+                },
+                columns: columns,
+                format: format
+            };
+
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestBody)
+            });
 
             if (!response.ok) {
-                let errorMsg = `Failed to download report (status: ${response.status})`;
-                 try {
+                let errorMsg = t('errors.downloadFailed', { status: response.status });
+                try {
                     const errorText = await response.text();
-                    errorMsg = `Failed to download report: ${errorText || response.statusText}`;
+                    errorMsg = t('errors.downloadFailedDetails', { 
+                        details: errorText || response.statusText 
+                    });
                 } catch (_) { /* Ignore parsing error */ }
                 throw new Error(errorMsg);
             }
@@ -169,7 +242,7 @@ export default function ReportGeneratorPage() {
 
         } catch (err: any) {
             console.error(`Error downloading ${format} report:`, err);
-            setError(err.message || `An unknown error occurred while downloading the ${format} report.`);
+            setError(err.message || t('errors.downloadUnknown', { format }));
         } finally {
             setIsDownloading(false);
         }
@@ -177,13 +250,12 @@ export default function ReportGeneratorPage() {
 
 
     return (
-        <div className="container mx-auto p-4 space-y-6">
-            <h1 className="text-2xl font-bold mb-4 text-base-content">Chat Report Generator</h1>
+        <div className="container max-w p-4 space-y-6">
 
             {/* Chat Selection */}
             <div className="form-control w-full max-w-xs">
                 <label className="label">
-                    <span className="label-text text-base-content">Select an Active Chat</span>
+                    <span className="label-text text-base-content">{t('chatSelection.label')}</span>
                 </label>
                 <select
                     className={`select select-bordered text-base-content ${isLoadingChats ? 'opacity-50' : ''}`}
@@ -192,7 +264,11 @@ export default function ReportGeneratorPage() {
                     disabled={isLoadingChats || chats.length === 0}
                 >
                     <option value="" disabled className="text-base-content">
-                        {isLoadingChats ? "Loading chats..." : (chats.length === 0 ? "No active chats found" : "Select a chat")}
+                        {isLoadingChats 
+                            ? t('chatSelection.loading') 
+                            : (chats.length === 0 
+                                ? t('chatSelection.noChats') 
+                                : t('chatSelection.placeholder'))}
                     </option>
                     {chats.map((chat) => (
                         <option key={chat.chat_id} value={chat.chat_id} className="text-base-content">
@@ -201,6 +277,32 @@ export default function ReportGeneratorPage() {
                     ))}
                 </select>
                 {isLoadingChats && <span className="loading loading-spinner loading-sm ml-2"></span>}
+            </div>
+
+            {/* Date Range Selection */}
+            <div className="flex flex-wrap gap-4 items-center">
+                <div className="form-control">
+                    <label className="label">
+                        <span className="label-text text-base-content">{t('dateRange.startDate')}</span>
+                    </label>
+                    <input
+                        type="date"
+                        className="input input-bordered text-base-content"
+                        value={startDate}
+                        onChange={(e) => setStartDate(e.target.value)}
+                    />
+                </div>
+                <div className="form-control">
+                    <label className="label">
+                        <span className="label-text text-base-content">{t('dateRange.endDate')}</span>
+                    </label>
+                    <input
+                        type="date"
+                        className="input input-bordered text-base-content"
+                        value={endDate}
+                        onChange={(e) => setEndDate(e.target.value)}
+                    />
+                </div>
             </div>
 
             {/* Action Buttons */}
@@ -213,10 +315,10 @@ export default function ReportGeneratorPage() {
                     {isGeneratingReport ? (
                         <>
                             <span className="loading loading-spinner loading-xs"></span>
-                            <span className="text-base-content">Generating...</span>
+                            <span className="text-base-content">{t('buttons.generating')}</span>
                         </>
                     ) : (
-                        <span className="text-base-content">Generate Report</span>
+                        <span className="text-base-content">{t('buttons.generateReport')}</span>
                     )}
                 </button>
                 <button
@@ -227,10 +329,10 @@ export default function ReportGeneratorPage() {
                     {isDownloading ? (
                         <>
                             <span className="loading loading-spinner loading-xs"></span>
-                            <span className="text-base-content">Downloading...</span>
+                            <span className="text-base-content">{t('buttons.downloading')}</span>
                         </>
                     ) : (
-                        <span className="text-base-content">Download CSV</span>
+                        <span className="text-base-content">{t('buttons.downloadCsv')}</span>
                     )}
                 </button>
                 <button
@@ -241,10 +343,10 @@ export default function ReportGeneratorPage() {
                     {isDownloading ? (
                         <>
                             <span className="loading loading-spinner loading-xs"></span>
-                            <span className="text-base-content">Downloading...</span>
+                            <span className="text-base-content">{t('buttons.downloading')}</span>
                         </>
                     ) : (
-                        <span className="text-base-content">Download XLSX</span>
+                        <span className="text-base-content">{t('buttons.downloadXlsx')}</span>
                     )}
                 </button>
             </div>
@@ -253,14 +355,14 @@ export default function ReportGeneratorPage() {
             {error && (
                 <div role="alert" className="alert alert-error">
                     <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                    <span className="text-base-content">Error: {error}</span>
+                    <span className="text-base-content">{t('errors.prefix')}: {error}</span>
                 </div>
             )}
 
             {/* Report Table Display */}
             {reportData.length > 0 && reportHeaders.length > 0 && (
                 <div className="mt-6">
-                    <h2 className="text-xl font-semibold mb-2 text-base-content">Report Preview</h2>
+                    <h2 className="text-xl font-semibold mb-2 text-base-content">{t('report.title')}</h2>
                     <div className="overflow-x-auto border border-base-300 rounded-lg">
                         <table className="table table-zebra w-full">
                             {/* head */}
@@ -286,7 +388,7 @@ export default function ReportGeneratorPage() {
                 </div>
             )}
             {isGeneratingReport && reportData.length === 0 && (
-                <div className="text-center p-4 text-base-content">Generating report preview...</div>
+                <div className="text-center p-4 text-base-content">{t('report.generating')}</div>
             )}
         </div>
     );

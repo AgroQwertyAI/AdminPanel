@@ -27,7 +27,7 @@ export async function GET(
   }
 }
 
-// Update chat active status
+// Update chat active status and template association
 export async function PATCH(
   request: NextRequest,
   { params }: { params: { id: string } }
@@ -35,20 +35,27 @@ export async function PATCH(
   try {
     const {id} = await params;
     const body = await request.json();
-    const {  active } = body;
+    const { active, template_id, setting_id } = body;
     
-    if (typeof active !== "boolean") {
+    // Validate active if provided
+    if (active !== undefined && typeof active !== "boolean") {
       return NextResponse.json({ 
-        error: " active status are required" 
+        error: "active status must be a boolean" 
       }, { status: 400 });
     }
     
     const client = await clientPromise;
     const db = client.db();
     
+    // Build update object - only include fields that were provided
+    const updateFields: any = { updated_at: new Date() };
+    if (active !== undefined) updateFields.active = active;
+    if (template_id !== undefined) updateFields.template_id = template_id;
+    if (setting_id !== undefined) updateFields.setting_id = setting_id;
+    
     const result = await db.collection("chats").updateOne(
       { chat_id: id },
-      { $set: { active, updated_at: new Date() } }
+      { $set: updateFields }
     );
     
     if (result.matchedCount === 0) {

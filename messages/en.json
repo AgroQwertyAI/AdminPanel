@@ -1,11 +1,11 @@
 {
   "common": {
-    "appName": "AgroAdmin",
-    "version": "AgroAdmin v1.0.0 © 2025",
+    "appName": "qwerty",
+    "version": "qwerty v1.0.0 © 2025",
     "subtitle": "Agricultural Management"
   },
   "navigation": {
-    "dashboard": "Dashboard",
+    "dashboard": "Statistics",
     "llmConfig": "LLM Configuration",
     "chatIntegration": "Chat Integration",
     "reportsExcel": "Reports & Excel",
@@ -15,7 +15,10 @@
     "logs": "Logs",
     "userManagement": "User Management",
     "settings": "Settings",
-    "api": "API"
+    "api": "API",
+    "users": "Users",
+    "reports": "Reports",
+    "templates": "Templates"
   },
   "userMenu": {
     "profile": "Profile",
@@ -23,54 +26,26 @@
     "logout": "Logout"
   },
   "dashboard": {
-    "title": "Dashboard",
-    "underDevelopment": "This section is under development",
+    "charts": {
+      "operationsByArea": "Operations by Area",
+      "culturesByArea": "Cultures by Area",
+      "dailyProgress": "Daily Progress (ha)",
+      "totalProgress": "Total Progress by Operation (ha)",
+      "noChatSelected": "No chat selected for dashboard charts. Please configure it in settings."
+    },
+    "errors": {
+      "fetchFailed": "Failed to fetch settings",
+      "chartsLoadFailed": "Failed to load charts"
+    },
     "stats": {
       "tasksProcessedToday": "Tasks Processed Today",
-      "moreFromYesterday": "21% more than yesterday",
+      "moreFromYesterday": "12% more than yesterday",
       "processingQueue": "Processing Queue",
-      "awaitingProcessing": "Tasks awaiting processing",
+      "awaitingProcessing": "Awaiting processing",
       "apiCallsToday": "API Calls Today",
-      "llmCalls": "LLM and classification calls",
-      "successRate": "Processing Success Rate",
-      "increaseRate": "↗︎ 2.1% from last week"
-    },
-    "liveStatus": {
-      "title": "Live Task Processing Status",
-      "active": "Active",
-      "table": {
-        "id": "ID",
-        "taskType": "Task Type",
-        "agronomist": "Agronomist",
-        "status": "Status",
-        "time": "Time",
-        "cropAnalysis": "Crop Analysis",
-        "soilTesting": "Soil Testing",
-        "pestIdentification": "Pest Identification",
-        "irrigationAnalysis": "Irrigation Analysis",
-        "completed": "Completed",
-        "processing": "Processing",
-        "waiting": "Waiting",
-        "failed": "Failed",
-        "timeAgo": "{{time}} ago"
-      },
-      "autoRefresh": "Auto-refresh:",
-      "seconds": "30s"
-    },
-    "dailyProgress": {
-      "title": "Daily Processing Progress",
-      "target": "Processing target: 150 tasks",
-      "progress": "89/150 (59%)",
-      "endOfDay": "End of day processing at 18:00",
-      "remaining": "5 hours remaining"
-    },
-    "recentActivities": {
-      "title": "Recent Activities",
-      "activities": {
-        "export": "Task batch exported to Excel and saved to Google Drive",
-        "modelUpdate": "LLM classification model updated to version 2.3",
-        "apiDisconnect": "Telegram API temporarily disconnected (reconnecting)"
-      }
+      "llmCalls": "LLM calls",
+      "successRate": "Success Rate",
+      "increaseRate": "2% increase from last week"
     }
   },
   "systemNotice": {
@@ -78,22 +53,67 @@
     "maintenance": "Planned maintenance: March 31, 22:00-23:00"
   },
   "meta": {
-    "title": "AgroAdmin - Agricultural Management",
-    "description": "AgroAdmin is a comprehensive agricultural management system for agronomists and farmers. Manage tasks, analyze crops, test soil, identify pests, and more.",
-    "keywords": "agroadmin, agricultural management, agronomist, farming, crop analysis, soil testing, pest identification, irrigation analysis"
+    "title": "qwerty - Agricultural Management",
+    "description": "qwerty agrocultural management is a comprehensive agricultural management system for agronomists and farmers. Manage tasks, analyze crops, test soil, identify pests, and more.",
+    "keywords": "qwerty, agricultural management, agronomist, farming, crop analysis, soil testing, pest identification, irrigation analysis"
   },
   "settingsPanel": {
     "title": "Settings",
-    "apiConfigTitle": "LLM API Configuration",
-    "apiUrlLabel": "LLM API Entrypoint URL",
-    "apiUrlPlaceholder": "Enter API URL",
-    "apiUrlDescription": "The base URL for LLM API requests",
-    "save": "Save",
+    "apiConfigTitle": "API Configuration",
+    "apiUrlLabel": "API Endpoint URL",
+    "apiUrlPlaceholder": "Enter API endpoint URL",
     "saving": "Saving...",
-    "refresh": "Refresh",
-    "updateSuccess": "LLM entrypoint updated successfully",
-    "fetchError": "Failed to fetch LLM entrypoint",
-    "updateError": "Failed to update LLM entrypoint"
+    "save": "Save",
+    "fetchError": "Failed to fetch settings",
+    "updateError": "Failed to update settings",
+    "updateSuccess": "Settings updated successfully",
+    "whatsappQrTitle": "WhatsApp QR Code",
+    "lastQrCodeLabel": "Last available QR code:",
+    "qrCodeInfo": "Scan this code with WhatsApp to connect to the system",
+    "noQrCode": "No WhatsApp QR code available. It will appear here when generated.",
+    "qrCodeFetchError": "Failed to fetch QR code",
+    "dashboardChartsTitle": "Dashboard Charts",
+    "sourceLabel": "Data Source",
+    "chatLabel": "Chat for Dashboard Charts",
+    "selectChat": "Select a chat",
+    "chatHelp": "Select the chat containing agricultural data for dashboard charts",
+    "saveDashboardChat": "Save Dashboard Chat",
+    "dashboardChatUpdateSuccess": "Dashboard chat updated successfully",
+    "reportSettingsTitle": "Report Schedules",
+    "addNewSetting": "Add New",
+    "showDeletedSettings": "Show deleted settings",
+    "noSettings": "No report schedules found",
+    "name": "Name",
+    "description": "Description",
+    "schedule": "Schedule",
+    "type": "Type",
+    "actions": "Actions",
+    "editSetting": "Edit Report Schedule",
+    "format": "Report Format",
+    "cronSchedule": "Schedule (Cron Format)",
+    "minute": "Minute",
+    "hour": "Hour",
+    "dayOfMonth": "Day (Month)",
+    "month": "Month",
+    "dayOfWeek": "Day (Week)",
+    "recipients": "Recipients",
+    "phoneNumber": "Phone Number",
+    "platform": "Platform",
+    "remove": "Remove",
+    "addRecipient": "Add Recipient",
+    "cancel": "Cancel",
+    "create": "Create",
+    "update": "Update",
+    "cloudStorageTitle": "Cloud Storage",
+    "yandexDiskTitle": "Yandex Disk",
+    "token": "OAuth Token",
+    "folderName": "Shared Folder Name",
+    "noYandexConfig": "No Yandex Disk configuration found.",
+    "configure": "Configure",
+    "edit": "Edit",
+    "googleDriveTitle": "Google Drive",
+    "serviceAccount": "Service Account JSON",
+    "noGoogleConfig": "No Google Drive configuration found."
   },
   "modelsPanel": {
     "title": "🤖 Models Management",
@@ -132,24 +152,35 @@
     "vramUsage": "VRAM Usage"
   },
   "chatPanel": {
-    "title": "Chat Panel",
-    "chatViewer": "Chat Viewer",
-    "chatConfiguration": "Chat Configuration",
-    "selectDataSource": "Select Data Source",
-    "selectChat": "Select Chat",
-    "selectAll": "Select All",
-    "deselectAll": "Deselect All",
-    "noChatsSelected": "No chats selected. Please select at least one chat to view messages.",
-    "noMessages": "No messages found in this chat.",
-    "selectDataSourceFirst": "Please select a data source first",
-    "noChatsAvailable": "No chats available",
-    "unknownChat": "Unknown Chat",
-    "unknownSource": "Unknown Source",
+    "processingReport": "Processing report",
+    "reportProcessedEmpty": "No data to display",
+    "processingError": "Processing Error",
+    "unknownError": "Unknown error",
+    "additionalData": "Additional Data",
+    "sseErrorPrefix": "Connection error",
+    "errorLoadingMessages": "Error loading messages",
+    "selectChatsToView": "Select chats to view messages",
+    "noMessages": "No messages available for selected chats",
     "unknownSender": "Unknown Sender",
+    "unknownChat": "Unknown Chat",
+    "sseConnectionError": "Connection to message stream failed",
+    "chatStatusUpdated": "Chat status updated successfully",
+    "chatViewer": "Chat Viewer",
+    "selectDataSource": "Select Data Sources",
+    "deselectAll": "Deselect All",
+    "selectAll": "Select All",
+    "noDataSources": "No data sources available",
+    "selectChat": "Select Active Chats",
+    "selectDataSourceFirst": "Select a data source first",
+    "noActiveChats": "No active chats available",
     "unnamed": "Unnamed Chat",
+    "chatConfiguration": "Chat Configuration",
     "configureDataSource": "Configure Data Source",
+    "selectSourcePrompt": "Select a data source to configure",
     "availableChats": "Available Chats",
-    "chatStatusUpdated": "Chat status updated successfully"
+    "noSourceSelected": "No source selected",
+    "selectSourceToConfigure": "Select a data source to configure chats",
+    "noChatsAvailableForSource": "No chats available for this data source"
   },
   "landing": {
     "nav": {
@@ -363,7 +394,8 @@
       "roleUser": "User",
       "roleNA": "N/A",
       "currentUser": "Current User",
-      "noUsers": "No users found in this team."
+      "noUsers": "No users found in this team.",
+      "adminUser": "Admin User"
     },
     "buttons": {
       "addUser": "Add New User",
@@ -378,7 +410,10 @@
       "nameLabel": "Full Name",
       "namePlaceholder": "e.g., John Doe",
       "passwordLabel": "Password",
-      "passwordPlaceholder": "Min 8 characters"
+      "passwordPlaceholder": "Min 8 characters",
+      "roleLabel": "Role",
+      "roleUser": "User",
+      "roleAdmin": "Administrator"
     },
     "deleteConfirm": "Are you sure you want to remove this user from the team and delete their account?"
   },
@@ -399,5 +434,103 @@
     "successUpdate": "Profile updated successfully!",
     "loadingUser": "Loading user data...",
     "sessionError": "Could not load user session."
+  },
+
+  "reports": {
+    "chatSelection": {
+      "label": "Select an Active Chat",
+      "placeholder": "Select a chat",
+      "loading": "Loading chats...",
+      "noChats": "No active chats found"
+    },
+    "dateRange": {
+      "startDate": "Start Date",
+      "endDate": "End Date"
+    },
+    "buttons": {
+      "generateReport": "Generate Report",
+      "generating": "Generating...",
+      "downloadCsv": "Download CSV",
+      "downloadXlsx": "Download XLSX",
+      "downloading": "Downloading..."
+    },
+    "errors": {
+      "prefix": "Error",
+      "unknown": "An unknown error occurred while fetching chats.",
+      "whatsappFetch": "Failed to fetch WhatsApp chats (status: {status})",
+      "telegramFetch": "Failed to fetch Telegram chats (status: {status})",
+      "reportGeneration": "Failed to generate report (status: {status})",
+      "reportGenerationWithDetails": "Failed to generate report: {details}",
+      "reportGenerationUnknown": "An unknown error occurred while generating the report.",
+      "csvParse": "Failed to parse CSV report. {details}",
+      "csvParseDetailed": "Failed to parse CSV report: {details}",
+      "downloadFailed": "Failed to download report (status: {status})",
+      "downloadFailedDetails": "Failed to download report: {details}",
+      "downloadUnknown": "An unknown error occurred while downloading the {format} report."
+    },
+    "report": {
+      "title": "Report Preview",
+      "generating": "Generating report preview..."
+    }
+  },
+
+  "templates": {
+    "selectTemplate": "Select Template",
+    "loading": "Loading...",
+    "selectOrCreate": "-- Select or Create --",
+    "createNewTemplate": "[ Create New Template ]",
+    "error": "Error",
+    "loadingTemplateDetails": "Loading template details...",
+    "templateName": "Template Name",
+    "enterTemplateName": "Enter template name",
+    "tableColumns": "Table Columns",
+    "columnPlaceholder": "Column {number} name",
+    "addAtLeastOneColumn": "Add at least one column.",
+    "newColumnName": "New column name",
+    "addColumn": "Add Column",
+    "taskSplitPrompt": "Task Split Prompt",
+    "taskSplitInstructions": "Instructions for breaking down tasks",
+    "enterTaskSplitPrompt": "Enter the prompt used to split tasks based on the columns...",
+    "systemPrompt": "System Prompt",
+    "systemPromptInstructions": "Overall instructions for the AI",
+    "enterSystemPrompt": "Enter the main system prompt or instructions for the AI processing this template...",
+    "associatedChats": "Associated Chats",
+    "selectChatsForTemplate": "Select chats that will use this template",
+    "loadingChats": "Loading chats...",
+    "noChats": "No chats available to associate with this template.",
+    "chats": "chats",
+    "noChatsForSource": "No chats available for this source.",
+    "inactive": "Inactive",
+    "chatsSelected": "{count} chats selected",
+    "clearAll": "Clear All",
+    "createTemplate": "Create Template",
+    "saveChanges": "Save Changes",
+    "deleteTemplate": "Delete Template",
+    "selectTemplateMessage": "Select a template from the dropdown above to edit it, or choose \"[ Create New Template ]\" to start a new one.",
+    "confirmDelete": "Are you sure you want to delete the template \"{name}\"? This cannot be undone.",
+    "noTemplateSelected": "No template selected to delete.",
+    "templateNameRequired": "Template name cannot be empty.",
+    "columnRequired": "Template must have at least one column.",
+    "emptyColumnsNotAllowed": "Column names cannot be empty.",
+    "columnExists": "Column \"{name}\" already exists.",
+    "columnNameEmpty": "Column name cannot be empty.",
+    "removeColumn": "Remove column: {name}"
+  },
+
+  "LogPanel": {
+    "title": "System Logs",
+    "status": "Status",
+    "connected": "Connected",
+    "disconnected": "Disconnected",
+    "noLogs": "No logs available",
+    "invalidDate": "Invalid Date",
+    "unknown": "Unknown",
+    "na": "N/A",
+    "level": {
+      "error": "Error",
+      "warn": "Warning",
+      "info": "Info",
+      "debug": "Debug"
+    }
   }
 }

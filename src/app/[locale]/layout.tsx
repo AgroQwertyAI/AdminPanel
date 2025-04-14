@@ -23,7 +23,7 @@ export default async function LocaleLayout({
   params
 }: {
   children: React.ReactNode;
-  params: Promise<{ locale: string, session:any }>;
+  params: Promise<{ locale: string, session: any }>;
 }) {
   // Ensure that the incoming `locale` is valid
   const { locale, session } = await params;
@@ -34,7 +34,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale}>
       <body>
-        <SessionProvider  session={session} >
+        <SessionProvider session={session} >
 
 
           <NextIntlClientProvider>{children}</NextIntlClientProvider>

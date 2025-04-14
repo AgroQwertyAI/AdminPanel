@@ -480,8 +480,6 @@ export default function ModelsPanel() {
 
   return (
     <div className="w-full text-base-content">
-      <h2 className="card-title text-secondary mb-6">{t('title')}</h2>
-
       {message.text && (
         <div className={`alert ${message.type === 'success' ? 'alert-success' : 'alert-error'} mb-4`}>
           <span>{message.text}</span>

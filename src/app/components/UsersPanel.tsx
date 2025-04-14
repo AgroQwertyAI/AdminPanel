@@ -110,7 +110,7 @@ export default function UsersPanel() {
 
   const handleDeleteUser = async (userIdToDelete: string) => {
     if (!isAdmin || userIdToDelete === session?.user?.id) return;
-    
+
     if (!confirm(t('deleteConfirm'))) return;
 
     setIsLoading(true);
@@ -170,11 +170,8 @@ export default function UsersPanel() {
 
   // --- Main Content Render ---
   return (
-    <div className="card bg-base-200 shadow-xl">
+    <div className="card bg-base-100 shadow-lg mb-6">
       <div className="card-body">
-        <h2 className="card-title text-base-content">
-          {t('userManagement')}
-        </h2>
 
         {!isAdmin && (
           <div className="alert alert-info mt-4">
@@ -198,7 +195,7 @@ export default function UsersPanel() {
                 const roleText = user.role === 'admin'
                   ? t('table.roleAdmin')
                   : t('table.roleUser');
-                
+
                 const canDelete = isAdmin && user.role !== 'admin' && user.id !== session?.user?.id;
 
                 return (
@@ -210,6 +207,7 @@ export default function UsersPanel() {
                       <td>
                         {canDelete ? (
                           <button
+                            key={`delete-btn-${user.id}`}
                             onClick={() => handleDeleteUser(user.id)}
                             className="btn btn-xs btn-error btn-outline"
                             aria-label={t('buttons.deleteUserAriaLabel', { username: user.username })}
@@ -217,9 +215,12 @@ export default function UsersPanel() {
                             <Trash2 size={14} />
                           </button>
                         ) : (
-                          <span className="text-xs text-base-content/70 italic">
-                            {user.id === session?.user?.id 
-                              ? t('table.currentUser') 
+                          <span
+                            key={`status-${user.id}`}
+                            className="text-xs text-base-content/70 italic"
+                          >
+                            {user.id === session?.user?.id
+                              ? t('table.currentUser')
                               : t('table.adminUser')}
                           </span>
                         )}

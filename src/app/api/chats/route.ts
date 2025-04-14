@@ -21,6 +21,7 @@ export async function GET(request: NextRequest) {
         chat_name: 1, 
         active: 1, 
         source_name: 1,
+        setting_id: 1,  // Add this line to include setting_id
         _id: 0 
       })
       .toArray();

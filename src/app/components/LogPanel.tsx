@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useTranslations } from 'next-intl';
 
 interface Log {
   _id?: string; // Optional _id from database
@@ -9,6 +10,7 @@ interface Log {
 }
 
 const LogPanel: React.FC = () => {
+  const t = useTranslations('LogPanel');
   const [logs, setLogs] = useState<Log[]>([]);
   const [isConnected, setIsConnected] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -110,20 +112,26 @@ const LogPanel: React.FC = () => {
     try {
       return new Date(timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
     } catch (e) {
-      return 'Invalid Date'; // Handle potential invalid date strings
+      return t('invalidDate'); // Handle potential invalid date strings
     }
   };
 
+  // Function to translate log level
+  const translateLevel = (level: string) => {
+    if (!level) return t('na');
+    return t(`level.${level.toLowerCase()}`, { defaultValue: level });
+  };
+
   return (
-    <div className="text-base-content card bg-base-200 shadow-xl h-full flex flex-col"> {/* Added h-full and flex */}
+    <div className="text-base-content card bg-base-100 shadow-lg mb-6 h-full flex flex-col"> {/* Added h-full and flex */}
       <div className="card-body flex flex-col overflow-hidden"> {/* Added flex, flex-col, overflow-hidden */}
         {/* Header */}
         <div className="flex justify-between items-center mb-4 flex-shrink-0"> {/* Added flex-shrink-0 */}
-          <h2 className="card-title text-primary">System Logs</h2>
+          <h2 className="card-title text-primary">{t('title')}</h2>
           <div className="flex items-center gap-2">
-            <span className="text-sm">Status:</span>
+            <span className="text-sm">{t('status')}:</span>
             <div className={`badge ${isConnected ? 'badge-success' : 'badge-error'}`}>
-              {isConnected ? 'Connected' : 'Disconnected'}
+              {isConnected ? t('connected') : t('disconnected')}
             </div>
           </div>
         </div>
@@ -138,17 +146,17 @@ const LogPanel: React.FC = () => {
           <div className="flex-grow overflow-y-auto max-h-[calc(100vh-200px)]"> {/* Adjust max-h as needed */}
             <div className="space-y-2 p-1"> {/* Added padding for scrollbar space */}
               {logs.length === 0 ? (
-                <div className="text-center p-4 text-base-content/70">No logs available</div>
+                <div className="text-center p-4 text-base-content/70">{t('noLogs')}</div>
               ) : (
                 logs.map((log, index) => (
                   // Use timestamp + index as key for better stability if _id is missing temporarily
                   <div key={log._id || `${log.timestamp}-${index}`} className="bg-base-100 p-3 rounded-lg shadow-sm break-words">
                     <div className="flex justify-between items-start gap-2">
                       <div className="flex items-center gap-2 flex-wrap"> {/* Added flex-wrap */}
-                        <div className={`badge ${getBadgeColor(log.level)}`}>{log.level || 'N/A'}</div>
+                        <div className={`badge ${getBadgeColor(log.level)}`}>{translateLevel(log.level)}</div>
                         <span className="text-xs opacity-70 whitespace-nowrap">{formatTime(log.timestamp)}</span>
                       </div>
-                      <div className="badge badge-outline badge-sm flex-shrink-0">{log.source || 'Unknown'}</div>
+                      <div className="badge badge-outline badge-sm flex-shrink-0">{log.source || t('unknown')}</div>
                     </div>
                     {/* Use pre-wrap to respect whitespace and wrap long lines */}
                     <p className="mt-2 whitespace-pre-wrap text-sm">{log.message}</p>
