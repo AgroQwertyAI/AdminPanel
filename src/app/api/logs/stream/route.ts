@@ -1,22 +1,5 @@
 import { NextRequest } from 'next/server';
-
-// Map to store connected clients
-const clients = new Set<{
-  id: string;
-  controller: ReadableStreamDefaultController;
-}>();
-
-// Function to send log to all connected clients
-export function sendLogToClients(log: any) {
-  clients.forEach(client => {
-    try {
-      const data = `data: ${JSON.stringify(log)}\n\n`;
-      client.controller.enqueue(data);
-    } catch (error) {
-      console.error("Error sending log to client:", error);
-    }
-  });
-}
+import { clients } from './log-service';
 
 export async function GET(req: NextRequest) {
   const clientId = crypto.randomUUID();
@@ -24,7 +7,9 @@ export async function GET(req: NextRequest) {
   // Create a new ReadableStream
   const stream = new ReadableStream({
     start(controller) {
-      clients.add({ id: clientId, controller });
+      // Store the client reference
+      const client = { id: clientId, controller };
+      clients.add(client);
       
       // Send initial connection message
       controller.enqueue('data: {"connected":true}\n\n');
@@ -37,7 +22,7 @@ export async function GET(req: NextRequest) {
       // Clean up when client disconnects
       req.signal.addEventListener('abort', () => {
         clearInterval(keepAliveInterval);
-        clients.delete(clients.values().next().value);
+        clients.delete(client); // Use the stored reference
       });
     }
   });

@@ -1,6 +1,6 @@
 export type SendingReportTo = {
   phone_number: string;
-  platform: "whatsapp" | "telegram";
+  messenger: "whatsapp" | "telegram";
 };
 
 export type Setting = {

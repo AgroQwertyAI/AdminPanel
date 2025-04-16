@@ -1,7 +1,6 @@
 import { type DefaultSession, type NextAuthConfig } from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
 import CredentialsProvider from "next-auth/providers/credentials";
-import axios from "axios";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -47,7 +46,7 @@ export const authConfig = {
                     return null;
                 }
 
-                const res = await fetch(`${process.env.NEXTAUTH_URL}/api/users/auth`, {
+                const res = await fetch(`${process.env.AUTH_URL}/api/users/auth`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({

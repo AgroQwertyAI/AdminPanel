@@ -2,10 +2,13 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const SERVICE_URL = 'http://localhost:52001/api';
 
+type Params = Promise<{ id: string }>;
+
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  segmentData: { params: Params }
 ) {
+  const params = await segmentData.params;
   const id = params.id;
   
   try {
@@ -39,8 +42,9 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  segmentData: { params: Params }
 ) {
+  const params = await segmentData.params;
   const id = params.id;
   
   try {

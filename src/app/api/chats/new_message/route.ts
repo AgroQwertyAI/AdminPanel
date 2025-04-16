@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import clientPromise from "@/util/mongodb";
-import { broadcastMessage } from "../stream_messages/route";
+import { broadcastMessage } from "@/utils/sse";
 
 export async function POST(request: NextRequest) {
   try {

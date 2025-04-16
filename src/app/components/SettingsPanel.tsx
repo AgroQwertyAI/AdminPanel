@@ -2,9 +2,16 @@
 
 import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
-import { Server, QrCode, BarChart2, FileText, Calendar, Cloud, Trash2, Edit, Plus, Save, X } from 'lucide-react';
+import { Server, QrCode, BarChart2, Calendar, Cloud, Trash2, Edit, Plus, Save, X } from 'lucide-react';
 import QRCode from 'react-qr-code';
 import { Setting, SendingReportTo, YandexDiskConfig, GoogleDriveConfig } from '../types/settings';
+
+interface Chat {
+  chat_id: string;
+  chat_name: string;
+  source_name: string;
+  setting_id?: number;
+}
 
 export default function SettingsPanel() {
   const settingsT = useTranslations('settingsPanel');
@@ -15,9 +22,9 @@ export default function SettingsPanel() {
 
   // Dashboard chat settings
   const [dashboardChatId, setDashboardChatId] = useState('');
-  const [sources, setSources] = useState([]);
+  const [sources, setSources] = useState<string[]>([]);
   const [selectedSource, setSelectedSource] = useState('');
-  const [chats, setChats] = useState([]);
+  const [chats, setChats] = useState<Chat[]>([]);
   const [loadingSources, setLoadingSources] = useState(false);
   const [loadingChats, setLoadingChats] = useState(false);
 
@@ -36,8 +43,8 @@ export default function SettingsPanel() {
   const [loadingCloud, setLoadingCloud] = useState(false);
 
   // Add new state for selected chats in settings
-  const [availableChats, setAvailableChats] = useState([]);
-  const [selectedChats, setSelectedChats] = useState([]);
+  const [availableChats, setAvailableChats] = useState<Chat[]>([]);
+  const [selectedChats, setSelectedChats] = useState<string[]>([]);
   const [loadingAvailableChats, setLoadingAvailableChats] = useState(false);
 
   useEffect(() => {
@@ -75,7 +82,7 @@ export default function SettingsPanel() {
 
       const data = await response.json();
       setEntrypointUrl(data.llm_endpoint);
-    } catch (error) {
+    } catch (error :any) {
       setMessage({ text: error.message, type: 'error' });
     } finally {
       setIsLoading(false);
@@ -104,7 +111,7 @@ export default function SettingsPanel() {
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
@@ -123,7 +130,7 @@ export default function SettingsPanel() {
       }
 
       setMessage({ text: settingsT('updateSuccess'), type: 'success' });
-    } catch (error) {
+    } catch (error :any) {
       setMessage({ text: error.message, type: 'error' });
     } finally {
       setIsLoading(false);
@@ -138,7 +145,7 @@ export default function SettingsPanel() {
         const data = await response.json();
         setDashboardChatId(data.dashboard_chat_id);
       }
-    } catch (error) {
+    } catch (error :any) {
       console.error("Error fetching dashboard chat ID:", error);
     }
   };
@@ -159,7 +166,7 @@ export default function SettingsPanel() {
     }
   };
 
-  const fetchChats = async (sourceName) => {
+  const fetchChats = async (sourceName: string) => {
     if (!sourceName) return;
 
     try {
@@ -193,7 +200,7 @@ export default function SettingsPanel() {
       }
 
       setMessage({ text: settingsT('dashboardChatUpdateSuccess') || 'Dashboard chat updated successfully', type: 'success' });
-    } catch (error) {
+    } catch (error :any) {
       setMessage({ text: error.message, type: 'error' });
     } finally {
       setIsLoading(false);
@@ -212,7 +219,7 @@ export default function SettingsPanel() {
 
       const data = await response.json();
       setReportSettings(data);
-    } catch (error) {
+    } catch (error :any) {
       console.error("Error fetching report settings:", error);
       setMessage({ text: error.message, type: 'error' });
     } finally {
@@ -234,14 +241,14 @@ export default function SettingsPanel() {
 
       setMessage({ text: 'Setting deleted successfully', type: 'success' });
       fetchReportSettings(); // Refresh the list
-    } catch (error) {
+    } catch (error :any) {
       setMessage({ text: error.message, type: 'error' });
     } finally {
       setIsLoading(false);
     }
   };
 
-  const updateSettingChats = async (settingId) => {
+  const updateSettingChats = async (settingId :any) => {
     if (!settingId) return;
 
     // Update each selected chat to associate it with this setting
@@ -317,7 +324,7 @@ export default function SettingsPanel() {
       setEditingSetting(null);
       setIsAddingNew(false);
       fetchReportSettings(); // Refresh the list
-    } catch (error) {
+    } catch (error :any) {
       setMessage({ text: error.message, type: 'error' });
     } finally {
       setIsLoading(false);
@@ -339,7 +346,7 @@ export default function SettingsPanel() {
   const removePhoneNumber = (index: number) => {
     if (!editingSetting) return;
 
-    const newSendTo = [...editingSetting.send_to];
+    const newSendTo = [...(editingSetting.send_to || [])];
     newSendTo.splice(index, 1);
 
     setEditingSetting({
@@ -351,7 +358,7 @@ export default function SettingsPanel() {
   const updatePhoneNumber = (index: number, field: keyof SendingReportTo, value: string) => {
     if (!editingSetting) return;
 
-    const newSendTo = [...editingSetting.send_to];
+    const newSendTo = [...(editingSetting.send_to || [])];
     newSendTo[index] = {
       ...newSendTo[index],
       [field]: value
@@ -413,7 +420,7 @@ export default function SettingsPanel() {
       setMessage({ text: 'Yandex Disk configuration saved successfully', type: 'success' });
       setYandexConfig(editingYandexConfig);
       setEditingYandexConfig(null);
-    } catch (error) {
+    } catch (error :any) {
       setMessage({ text: error.message, type: 'error' });
     } finally {
       setIsLoading(false);
@@ -441,7 +448,7 @@ export default function SettingsPanel() {
       setMessage({ text: 'Google Drive configuration saved successfully', type: 'success' });
       setGoogleDriveConfig(editingGoogleConfig);
       setEditingGoogleConfig(null);
-    } catch (error) {
+    } catch (error :any) {
       setMessage({ text: error.message, type: 'error' });
     } finally {
       setIsLoading(false);
@@ -460,7 +467,7 @@ export default function SettingsPanel() {
           ...editingGoogleConfig!,
           service_account_json: json
         });
-      } catch (error) {
+      } catch  {
         setMessage({ text: 'Invalid JSON file', type: 'error' });
       }
     };
@@ -493,7 +500,7 @@ export default function SettingsPanel() {
   };
 
   // Add function to fetch chats associated with a setting
-  const fetchSettingChats = async (settingId) => {
+  const fetchSettingChats = async (settingId :any) => {
     if (!settingId) return;
 
     try {
@@ -508,7 +515,7 @@ export default function SettingsPanel() {
   };
 
   // Modify the existing function to handle setting editing
-  const handleEditSetting = (setting) => {
+  const handleEditSetting = (setting :any) => {
     setEditingSetting(setting);
     setIsAddingNew(false);
 
@@ -522,7 +529,7 @@ export default function SettingsPanel() {
   };
 
   // Add functions to handle chat selection
-  const handleChatSelectionChange = (chatId) => {
+  const handleChatSelectionChange = (chatId :any) => {
     setSelectedChats(prev => {
       if (prev.includes(chatId)) {
         return prev.filter(id => id !== chatId);

@@ -332,7 +332,7 @@ export default function ModelsPanel() {
 
       const data = await response.json();
       setEntrypointUrl(data.llm_endpoint);
-    } catch (error) {
+    } catch (error :any) {
       setMessage({ text: error.message, type: 'error' });
     }
   };
@@ -390,7 +390,7 @@ export default function ModelsPanel() {
 
       // Clear message after 3 seconds
       setTimeout(() => setMessage({ text: '', type: '' }), 3000);
-    } catch (error) {
+    } catch (error :any) {
       setMessage({ text: error.message, type: 'error' });
     } finally {
       setIsLoading(false);
@@ -418,7 +418,7 @@ export default function ModelsPanel() {
 
       // Clear message after 3 seconds
       setTimeout(() => setMessage({ text: '', type: '' }), 3000);
-    } catch (error) {
+    } catch (error :any) {
       setMessage({ text: error.message, type: 'error' });
     } finally {
       setIsLoading(false);

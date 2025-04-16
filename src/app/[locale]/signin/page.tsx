@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, FormEvent } from 'react'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
@@ -13,7 +13,7 @@ export default function SignIn() {
   const router = useRouter()
   const t = useTranslations('signin')
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setLoading(true)
     setError('')
@@ -31,7 +31,7 @@ export default function SignIn() {
       } else {
         router.push('/dashboard')
       }
-    } catch (error) {
+    } catch {
       setError(t('errorMessage'))
       setLoading(false)
     }

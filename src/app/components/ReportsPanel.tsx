@@ -94,8 +94,8 @@ export default function ReportGeneratorPage() {
         setReportHeaders([]);
 
         try {
-            // Use the API endpoint with POST request
-            const url = `http://localhost:52003/generate_table/${encodeURIComponent(selectedChatId)}`;
+            // Use our new API endpoint with POST request
+            const url = `/api/tables/${encodeURIComponent(selectedChatId)}`;
 
             // Get columns from report headers or use default empty array if not available
             const columns = reportHeaders.length > 0 ? reportHeaders : [];
@@ -110,7 +110,7 @@ export default function ReportGeneratorPage() {
                 return date.toISOString(); // Full ISO timestamp with timezone
             };
 
-            // Updated request body - removed type_mappings
+            // Updated request body
             const requestBody = {
                 time: {
                     start: startDate ? `${startDate}T00:00:00Z` : formatDateForAPI(oneMonthAgo),
@@ -137,7 +137,7 @@ export default function ReportGeneratorPage() {
                     errorMsg = t('errors.reportGenerationWithDetails', {
                         details: errorText || response.statusText
                     });
-                } catch (_) { /* Ignore parsing error */ }
+                } catch  { /* Ignore parsing error */ }
                 throw new Error(errorMsg);
             }
 
@@ -184,8 +184,8 @@ export default function ReportGeneratorPage() {
         setError(null); // Clear previous errors
 
         try {
-            // Use the API endpoint with POST request
-            const url = `http://localhost:52003/generate_table/${encodeURIComponent(selectedChatId)}`;
+            // Use our new API endpoint with POST request
+            const url = `/api/tables/${encodeURIComponent(selectedChatId)}`;
 
             // Get columns from report headers or use default empty array if not available
             const columns = reportHeaders.length > 0 ? reportHeaders : [];
@@ -200,7 +200,7 @@ export default function ReportGeneratorPage() {
                 return date.toISOString(); // Full ISO timestamp with timezone
             };
 
-            // Updated request body - removed type_mappings
+            // Updated request body
             const requestBody = {
                 time: {
                     start: startDate ? `${startDate}T00:00:00Z` : formatDateForAPI(oneMonthAgo),
@@ -226,7 +226,7 @@ export default function ReportGeneratorPage() {
                     errorMsg = t('errors.downloadFailedDetails', { 
                         details: errorText || response.statusText 
                     });
-                } catch (_) { /* Ignore parsing error */ }
+                } catch { /* Ignore parsing error */ }
                 throw new Error(errorMsg);
             }
 

@@ -10,21 +10,78 @@ import {
     XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from 'recharts';
 
+// Define interfaces for chart data structures
+interface ChartDataset {
+    label: string;
+    data: number[];
+}
+
+interface ChartJsData {
+    labels: string[];
+    datasets: ChartDataset[];
+}
+
+interface ChartResponse {
+    data?: ChartJsData;
+    datasets?: ChartDataset[];
+    labels?: string[];
+}
+
+interface DataItem {
+    label?: string;
+    name?: string;
+    date?: string;
+    value?: number;
+    data?: number;
+    series?: string;
+    operation?: string;
+    [key: string]: any;
+}
+
+interface DashboardState {
+    operations: ChartResponse | DataItem[] | null;
+    cultures: ChartResponse | DataItem[] | null;
+    dailyProgress: ChartResponse | DataItem[] | null;
+    totalProgress: ChartResponse | DataItem[] | null;
+}
+
+interface TransformedPieData {
+    name: string;
+    value: number;
+}
+
+interface TransformedBarData {
+    name: string;
+    value: number;
+}
+
+interface TransformedLineData {
+    name: string;
+    [key: string]: number | string;
+}
+
+interface DebugInfo {
+    operations?: ChartResponse | DataItem[] | null;
+    cultures?: ChartResponse | DataItem[] | null;
+    dailyProgress?: ChartResponse | DataItem[] | null;
+    totalProgress?: ChartResponse | DataItem[] | null;
+}
+
 // Custom colors for charts
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d', '#ffc658', '#8dd1e1'];
 
 export default function DashboardPanel() {
     const dashT = useTranslations('dashboard');
-    const [dashboardChatId, setDashboardChatId] = useState('');
-    const [chartData, setChartData] = useState({
+    const [dashboardChatId, setDashboardChatId] = useState<string>('');
+    const [chartData, setChartData] = useState<DashboardState>({
         operations: null,
         cultures: null,
         dailyProgress: null,
         totalProgress: null
     });
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState('');
-    const [debugInfo, setDebugInfo] = useState(null);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [error, setError] = useState<string>('');
+    const [debugInfo, setDebugInfo] = useState<DebugInfo | null>(null);
 
     useEffect(() => {
         fetchDashboardChatId();
@@ -47,7 +104,7 @@ export default function DashboardPanel() {
         }
     };
 
-    const generateCharts = async (chatId) => {
+    const generateCharts = async (chatId: string) => {
         if (!chatId) return;
 
         setIsLoading(true);
@@ -67,11 +124,11 @@ export default function DashboardPanel() {
         }
     };
 
-    const generateOperationsChart = async (chatId) => {
+    const generateOperationsChart = async (chatId: string) => {
         const now = new Date();
         const startDate = new Date(now.getFullYear(), now.getMonth(), 1); // Start of current month
 
-        const response = await fetch(`http://localhost:52003/generate_chart/${chatId}`, {
+        const response = await fetch(`/api/charts/${chatId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -102,11 +159,11 @@ export default function DashboardPanel() {
         setChartData(prev => ({ ...prev, operations: data }));
     };
 
-    const generateCulturesChart = async (chatId) => {
+    const generateCulturesChart = async (chatId: string) => {
         const now = new Date();
         const startDate = new Date(now.getFullYear(), now.getMonth(), 1); // Start of current month
 
-        const response = await fetch(`http://localhost:52003/generate_chart/${chatId}`, {
+        const response = await fetch(`/api/charts/${chatId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -136,11 +193,11 @@ export default function DashboardPanel() {
         setChartData(prev => ({ ...prev, cultures: data }));
     };
 
-    const generateDailyProgressChart = async (chatId) => {
+    const generateDailyProgressChart = async (chatId: string) => {
         const now = new Date();
         const startDate = new Date(now.getFullYear(), now.getMonth(), 1); // Start of current month
 
-        const response = await fetch(`http://localhost:52003/generate_chart/${chatId}`, {
+        const response = await fetch(`/api/charts/${chatId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -170,11 +227,11 @@ export default function DashboardPanel() {
         setChartData(prev => ({ ...prev, dailyProgress: data }));
     };
 
-    const generateTotalProgressChart = async (chatId) => {
+    const generateTotalProgressChart = async (chatId: string) => {
         const now = new Date();
         const startDate = new Date(now.getFullYear(), now.getMonth(), 1); // Start of current month
 
-        const response = await fetch(`http://localhost:52003/generate_chart/${chatId}`, {
+        const response = await fetch(`/api/charts/${chatId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -206,28 +263,28 @@ export default function DashboardPanel() {
     };
 
     // Transform Chart.js data to Recharts format for pie/doughnut charts
-    const transformPieData = (chartData) => {
+    const transformPieData = (chartData: ChartResponse | DataItem[] | null): TransformedPieData[] => {
         try {
             if (!chartData) return [];
 
             // Check for different possible data structures
-            if (chartData.data && chartData.data.labels) {
+            if (chartData && 'data' in chartData && chartData.data?.labels) {
                 // Original Chart.js format
                 return chartData.data.labels.map((label, index) => ({
                     name: label,
-                    value: chartData.data.datasets[0].data[index]
+                    value: chartData.data?.datasets[0].data[index] || 0
                 }));
             } else if (Array.isArray(chartData)) {
                 // Direct array of data
                 return chartData.map(item => ({
-                    name: item.label || item.name,
-                    value: item.value || item.data
+                    name: item.label || item.name || '',
+                    value: item.value || item.data || 0
                 }));
-            } else if (chartData.datasets) {
+            } else if ('datasets' in chartData && chartData.labels) {
                 // Another possible format
                 return chartData.labels.map((label, index) => ({
                     name: label,
-                    value: chartData.datasets[0].data[index]
+                    value: chartData.datasets?.[0].data[index] || 0
                 }));
             }
 
@@ -240,28 +297,28 @@ export default function DashboardPanel() {
     };
 
     // Transform Chart.js data to Recharts format for bar chart
-    const transformBarData = (chartData) => {
+    const transformBarData = (chartData: ChartResponse | DataItem[] | null): TransformedBarData[] => {
         try {
             if (!chartData) return [];
 
             // Check for different possible data structures
-            if (chartData.data && chartData.data.labels) {
+            if (chartData && 'data' in chartData && chartData.data?.labels) {
                 // Original Chart.js format
                 return chartData.data.labels.map((label, index) => ({
                     name: label,
-                    value: chartData.data.datasets[0].data[index]
+                    value: chartData.data?.datasets[0].data[index] || 0
                 }));
             } else if (Array.isArray(chartData)) {
                 // Direct array of data
                 return chartData.map(item => ({
-                    name: item.label || item.name || item.date,
-                    value: item.value || item.data
+                    name: item.label || item.name || item.date || '',
+                    value: item.value || item.data || 0
                 }));
-            } else if (chartData.datasets) {
+            } else if ('datasets' in chartData && chartData.labels) {
                 // Another possible format
                 return chartData.labels.map((label, index) => ({
                     name: label,
-                    value: chartData.datasets[0].data[index]
+                    value: chartData.datasets?.[0].data[index] || 0
                 }));
             }
 
@@ -274,17 +331,17 @@ export default function DashboardPanel() {
     };
 
     // Transform Chart.js data to Recharts format for line chart
-    const transformLineData = (chartData) => {
+    const transformLineData = (chartData: ChartResponse | DataItem[] | null): TransformedLineData[] => {
         try {
             if (!chartData) return [];
 
             // Check for different possible data structures
-            if (chartData.data && chartData.data.labels) {
+            if (chartData && 'data' in chartData && chartData.data?.labels) {
                 // Original Chart.js format
                 const { labels, datasets } = chartData.data;
 
                 return labels.map((label, i) => {
-                    const dataPoint = { name: label };
+                    const dataPoint: TransformedLineData = { name: label };
 
                     datasets.forEach((dataset) => {
                         dataPoint[dataset.label] = dataset.data[i];
@@ -299,31 +356,31 @@ export default function DashboardPanel() {
 
                 if (firstItem && (firstItem.date || firstItem.name)) {
                     // Group by date/name
-                    const groupedData = {};
+                    const groupedData: Record<string, TransformedLineData> = {};
 
                     chartData.forEach(item => {
-                        const key = item.date || item.name;
+                        const key = item.date || item.name || '';
                         const series = item.series || item.operation || 'Value';
 
                         if (!groupedData[key]) {
                             groupedData[key] = { name: key };
                         }
 
-                        groupedData[key][series] = item.value || item.data;
+                        groupedData[key][series] = item.value || item.data || 0;
                     });
 
                     return Object.values(groupedData);
                 }
 
-                return chartData;
-            } else if (chartData.datasets) {
+                return chartData as TransformedLineData[];
+            } else if ('datasets' in chartData && chartData.labels) {
                 // Another possible format
                 const { labels, datasets } = chartData;
 
                 return labels.map((label, i) => {
-                    const dataPoint = { name: label };
+                    const dataPoint: TransformedLineData = { name: label };
 
-                    datasets.forEach((dataset) => {
+                    datasets?.forEach((dataset) => {
                         dataPoint[dataset.label] = dataset.data[i];
                     });
 
@@ -340,7 +397,7 @@ export default function DashboardPanel() {
     };
 
     // Rendering for pie chart (operations and cultures)
-    const renderPieChart = (data, isDonut = false) => {
+    const renderPieChart = (data: ChartResponse | DataItem[] | null, isDonut = false) => {
         if (!data) return null;
 
         const transformedData = transformPieData(data);
@@ -377,7 +434,7 @@ export default function DashboardPanel() {
     };
 
     // Rendering for bar chart (daily progress)
-    const renderBarChart = (data) => {
+    const renderBarChart = (data: ChartResponse | DataItem[] | null) => {
         if (!data) return null;
 
         const transformedData = transformBarData(data);
@@ -404,7 +461,7 @@ export default function DashboardPanel() {
     };
 
     // Rendering for line chart (total progress)
-    const renderLineChart = (data) => {
+    const renderLineChart = (data: ChartResponse | DataItem[] | null) => {
         if (!data) return null;
 
         const transformedData = transformLineData(data);

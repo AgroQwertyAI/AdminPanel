@@ -3,12 +3,15 @@ import clientPromise from '@/util/mongodb';
 import { ObjectId } from 'mongodb';
 import { hash } from 'bcrypt';
 
+type Params = Promise<{ id: string }>;
+
 export async function GET(
     req: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Params }
 ) {
     try {
-        const id = params.id;
+        const resolvedParams = await params;
+        const id = resolvedParams.id;
 
         if (!id) {
             return NextResponse.json(
@@ -55,10 +58,11 @@ export async function GET(
 
 export async function PATCH(
     req: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Params }
 ) {
     try {
-        const id = params.id;
+        const resolvedParams = await params;
+        const id = resolvedParams.id;
 
         if (!id) {
             return NextResponse.json(

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import clientPromise from '@/util/mongodb';
-import { sendLogToClients } from '../stream/route';
+import { sendLogToClients } from '@/app/api/logs/stream/log-service';
 
 export async function POST(req: NextRequest) {
   try {

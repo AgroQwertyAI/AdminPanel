@@ -1,12 +1,9 @@
 import { NextRequest } from "next/server";
-
-// Store active connections with unique IDs
-let clientIdCounter = 0;
-const clients = new Map<number, ReadableStreamDefaultController<any>>();
+import { clients, getNextClientId, broadcastMessage } from "@/utils/sse";
 
 export async function GET(request: NextRequest) {
   const encoder = new TextEncoder();
-  const clientId = clientIdCounter++;
+  const clientId = getNextClientId();
   
   console.log(`[SSE] New client connected: ${clientId}. Total clients: ${clients.size + 1}`);
 
@@ -52,25 +49,3 @@ setInterval(() => {
     timestamp
   });
 }, 30000); // Every 30 seconds
-
-// Helper function to broadcast messages to all clients
-export function broadcastMessage(message: any) {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(`data: ${JSON.stringify(message)}\n\n`);
-  
-  // Create a copy of client entries to avoid issues if the map changes during iteration
-  const clientEntries = Array.from(clients.entries());
-  console.log(JSON.stringify(message));
-  console.log(`[SSE] Broadcasting to ${clientEntries.length} clients`);
-  
-  for (const [clientId, controller] of clientEntries) {
-    try {
-      controller.enqueue(data);
-    } catch (error) {
-      console.error(`[SSE] Error broadcasting to client ${clientId}:`, error);
-      
-      // Remove failed client
-      clients.delete(clientId);
-    }
-  }
-}

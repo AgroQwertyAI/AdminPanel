@@ -12,7 +12,7 @@ let clientPromise: Promise<MongoClient>;
 
 if (process.env.NODE_ENV === 'development') {
   // In development mode, use a global variable to preserve the connection
-  let globalWithMongo = global as typeof global & {
+  const globalWithMongo = global as typeof global & {
     _mongoClientPromise?: Promise<MongoClient>;
   };
 

@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import clientPromise from '@/util/mongodb';
 import { hash } from 'bcrypt';
 
+import {ObjectId} from 'mongodb';
+
 export async function GET() {
   try {
     const client = await clientPromise;
@@ -89,7 +91,6 @@ export async function DELETE(req: NextRequest) {
     const db = client.db('agro');
     const usersCollection = db.collection('users');
     
-    const { ObjectId } = require('mongodb');
     let objectId;
     
     try {

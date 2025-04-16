@@ -23,7 +23,7 @@ const LogPanel: React.FC = () => {
       try {
         const response = await fetch('/api/logs');
         if (!response.ok) throw new Error('Failed to fetch logs');
-        let data: Log[] = await response.json();
+        const data: Log[] = await response.json();
 
         // **MODIFICATION 1: Ensure initial logs are oldest first**
         // Assuming the API might return newest first, we sort by timestamp ascending.

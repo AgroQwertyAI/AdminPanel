@@ -4,10 +4,11 @@ import clientPromise from "@/util/mongodb";
 // Get chat by ID
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const {id} = await params;
+    const resolvedParams = await params;
+    const id = resolvedParams.id;
     
     const client = await clientPromise;
     const db = client.db();
@@ -30,10 +31,11 @@ export async function GET(
 // Update chat active status and template association
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const {id} = await params;
+    const resolvedParams = await params;
+    const id = resolvedParams.id;
     const body = await request.json();
     const { active, template_id, setting_id } = body;
     
@@ -76,10 +78,11 @@ export async function PATCH(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const {id} = await params;
+    const resolvedParams = await params;
+    const id = resolvedParams.id;
     
     const client = await clientPromise;
     const db = client.db();

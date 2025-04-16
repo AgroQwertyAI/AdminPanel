@@ -524,7 +524,6 @@ export default function ChatPanel() {
             setChats([]);
             setSelectedChats([]);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedDataSources]);
 
     // Fetch all chats for configuration
@@ -534,7 +533,6 @@ export default function ChatPanel() {
         } else {
             setAllChats([]);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedConfigSource]);
 
     const fetchDataSources = async () => {

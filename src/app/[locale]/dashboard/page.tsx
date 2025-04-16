@@ -6,13 +6,11 @@ import {
   Settings,
   MessageSquare,
   FileSpreadsheet,
-  Clock,
-  Database,
-  AlertCircle,
+  
   Home,
-  Users,
+ 
   Bot,
-  Cloud,
+  
   Activity,
   User
 } from "lucide-react";
@@ -35,8 +33,6 @@ export default function AdminPanel({ }) {
   const navT = useTranslations('navigation');
   const dashT = useTranslations('dashboard');
   const userT = useTranslations('userMenu');
-  const noticeT = useTranslations('systemNotice');
-
   const [activeTab, setActiveTab] = useState("dashboard");
   
   // Function to get the text name of the active tab

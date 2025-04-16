@@ -1,14 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import clientPromise from "@/util/mongodb";
 
+type Params = Promise<{ chat_id: string }>;
+
 export async function GET(
   request: NextRequest,
-  { params }: { params: { chat_id: string } }
+  { params }: { params: Params }
 ) {
   try {
-    const {chat_id} = await params;
+    const chat_id = (await params).chat_id;
     const { searchParams } = new URL(request.url);
-    
     
     const client = await clientPromise;
     const db = client.db();

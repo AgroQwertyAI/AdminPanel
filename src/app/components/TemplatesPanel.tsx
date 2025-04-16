@@ -36,10 +36,6 @@ interface GroupedChats {
     [sourceName: string]: Chat[];
 }
 
-// Type for the props (if any needed in the future)
-interface TemplatesPanelProps {
-    // Example prop: onTemplateSelect?: (templateId: string | null) => void;
-}
 
 // --- Default empty template state ---
 const defaultTemplateState: Omit<Template, '_id'> = {
@@ -50,7 +46,7 @@ const defaultTemplateState: Omit<Template, '_id'> = {
 };
 
 // --- Component ---
-const TemplatesPanel: React.FC<TemplatesPanelProps> = () => {
+const TemplatesPanel: React.FC = () => {
     const t = useTranslations('templates');
 
     const [templatesList, setTemplatesList] = useState<TemplateListItem[]>([]);
