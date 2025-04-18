@@ -1,4 +1,4 @@
-![node](https://github.com/AgroQwertyAI/AdminPanel/actions/workflows/main.yml/badge.svg)
+![node.js](https://github.com/AgroQwertyAI/AdminPanel/actions/workflows/node.js.yml/badge.svg)
 
 # Агрономическая отчётность
 
