@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-// Target service URL
-const REPORT_SERVICE_URL = "http://localhost:52003";
+const PRESENTATION_SERVICE_URL = process.env.PRESENTATION_SERVICE_URL || 'http://localhost:52003';
 
 export async function GET(request: NextRequest) {
   try {
@@ -19,7 +18,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Construct the target URL
-    const targetUrl = `${REPORT_SERVICE_URL}/generate_table?chat_id=${encodeURIComponent(chat_id)}&format=${format || 'csv'}`;
+    const targetUrl = `${PRESENTATION_SERVICE_URL}/generate_table?chat_id=${encodeURIComponent(chat_id)}&format=${format || 'csv'}`;
 
     // Forward the request
     const response = await fetch(targetUrl);
