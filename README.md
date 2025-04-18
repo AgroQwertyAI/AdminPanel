@@ -1,3 +1,5 @@
+![node](https://github.com/AgroQwertyAI/AdminPanel/actions/workflows/main.yml/badge.svg)
+
 # Агрономическая отчётность
 
 Веб-система для обработки, анализа и хранения агрономических отчётов, разработанная с использованием Next.js, DaisyUI, Tailwind CSS и MongoDB.
