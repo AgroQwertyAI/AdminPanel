@@ -78,4 +78,4 @@ npm start
 
 ## Лицензия
 
-MIT
+Apache 2.0
