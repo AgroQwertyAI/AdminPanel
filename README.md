@@ -1,36 +1,81 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Агрономическая отчётность
 
-## Getting Started
+Веб-система для обработки, анализа и хранения агрономических отчётов, разработанная с использованием Next.js, DaisyUI, Tailwind CSS и MongoDB.
 
-First, run the development server:
+## Требования
+
+Перед началом работы убедитесь, что у вас установлено:
+
+- Node.js (версия 18.0.0 или выше)
+- MongoDB (версия 6.0 или выше)
+
+## Установка
+
+1. Клонируйте репозиторий:
+
+```bash
+git clone https://github.com/AgroQwertyAI/AdminPanel
+cd AdminPanel
+```
+
+2. Установите зависимости:
+
+```bash
+npm install
+```
+
+3. Создайте файл `.env.local` в корневой директории проекта и добавьте следующие переменные окружения:
+
+```
+MONGODB_URI=mongodb://localhost:27017/agro_reports
+NEXT_PUBLIC_API_URL=http://localhost:3000/api
+```
+
+## Запуск проекта
+
+### Режим разработки
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Приложение будет доступно по адресу [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Сборка для production
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+```
 
-## Learn More
+### Запуск production-версии
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm start
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## База данных
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Приложение использует MongoDB для хранения данных. Убедитесь, что сервер MongoDB запущен перед запуском приложения.
 
-## Deploy on Vercel
+## Функциональность
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Создание и редактирование шаблонов агрономических отчётов
+- Диаграммы со статистикой
+- Реалтайм обработка сообщений
+- Система пользователей и ролей
+- Подключение ватсапа и телеграма
+- Настройка яндекс и гугл диска
+- Расписание отправки отчётов
+- Загрузка отчётов из фронтенда
+... и многоё другоё
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Технологии
+
+- [Next.js](https://nextjs.org/) - React-фреймворк для создания веб-приложений
+- [Tailwind CSS](https://tailwindcss.com/) - Утилитарный CSS-фреймворк
+- [DaisyUI](https://daisyui.com/) - UI компоненты для Tailwind CSS
+- [MongoDB](https://www.mongodb.com/) - NoSQL база данных
+
+## Лицензия
+
+MIT
